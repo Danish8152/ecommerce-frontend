@@ -136,9 +136,16 @@ export default function WishlistPage() {
                           image: item.image,
                         })
                       }
-                      className="w-full py-3.5 bg-[#facc15] hover:bg-black text-black hover:text-[#facc15] rounded-full font-black text-[11px] uppercase tracking-widest shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      disabled={!item.inStock}
+                      className="w-full py-3.5 bg-[#facc15] hover:bg-black text-black hover:text-[#facc15] rounded-full font-black text-[11px] uppercase tracking-widest shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-[#facc15] disabled:hover:text-black"
                     >
-                      <ShoppingCart size={14} /> Add to Cart
+                      {item.inStock ? (
+                        <>
+                          <ShoppingCart size={14} /> Add to Cart
+                        </>
+                      ) : (
+                        "Out of Stock"
+                      )}
                     </button>
                   </motion.div>
                 ))}

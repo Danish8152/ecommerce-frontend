@@ -62,17 +62,27 @@ const Footer = () => {
               Menu
             </h4>
             <nav className="flex flex-col gap-3 text-gray-400 font-bold text-sm">
-              {["About us", "Landing", "Shop", "Contact", "Blog"].map(
-                (link) => (
-                  <a
-                    key={link}
-                    href="#"
-                    className="hover:text-white transition-colors"
-                  >
-                    {link}
-                  </a>
-                ),
-              )}
+              <Link href="/" className="hover:text-white transition-colors">
+                Home
+              </Link>
+              <Link href="/shop" className="hover:text-white transition-colors">
+                Shop
+              </Link>
+              <Link
+                href="/bestseller"
+                className="hover:text-white transition-colors"
+              >
+                Bestseller
+              </Link>
+              <Link href="/about" className="hover:text-white transition-colors">
+                About us
+              </Link>
+              <Link
+                href="/contact"
+                className="hover:text-white transition-colors"
+              >
+                Contact us
+              </Link>
             </nav>
           </div>
 

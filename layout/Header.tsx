@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { usePathname } from "next/navigation";
+import React, { useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   User,
   ShoppingBasket,
@@ -9,6 +9,7 @@ import {
   Menu,
   X,
   Heart,
+  Search,
 } from "lucide-react";
 import {
   FaFacebookF,
@@ -40,11 +41,6 @@ const navItems: NavItem[] = [
     hasDropdown: false,
   },
   {
-    name: "About us",
-    href: "/about",
-    hasDropdown: false,
-  },
-  {
     name: "Bestseller",
     href: "/bestseller",
     hasDropdown: false,
@@ -54,24 +50,36 @@ const navItems: NavItem[] = [
     href: "/shop",
     hasDropdown: false,
   },
-
-  {
-    name: "Contact us",
-    href: "/contact",
-    hasDropdown: false,
-  },
 ];
 
 const Header = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(
     null,
   );
+  const desktopSearchInputRef = useRef<HTMLInputElement | null>(null);
+  const mobileSearchInputRef = useRef<HTMLInputElement | null>(null);
   const { user, logout, isAuthenticated } = useAuth();
   const { cartTotal, itemCount } = useCart();
   const { wishlistCount } = useWishlist();
   const pathname = usePathname();
+  const currentSearchParam = searchParams.get("search") || "";
+
+  const navigateToSearch = (rawQuery: string, { closeMobile = false } = {}) => {
+    const nextQuery = rawQuery.trim();
+    const target = nextQuery
+      ? `/shop?search=${encodeURIComponent(nextQuery)}`
+      : "/shop";
+
+    router.push(target);
+
+    if (closeMobile) {
+      setIsMobileMenuOpen(false);
+    }
+  };
 
   const isActive = (item: NavItem) => {
     if (item.href === "/") {
@@ -84,8 +92,8 @@ const Header = () => {
     <>
       <header className="w-full font-sans absolute top-0 left-0 z-50 bg-white/90 backdrop-blur-md border-b border-white/20 shadow-xs">
         {/* Top Announcement Bar */}
-        <div className="bg-[#facc15] py-2 px-4 sm:px-6 flex justify-between items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black">
-          <div className="flex gap-3 sm:gap-4">
+        <div className="bg-[#facc15] py-2 px-4 sm:px-6 flex items-center text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black">
+          <div className="flex items-center gap-3 sm:gap-4">
             <FaFacebookF
               size={14}
               className="cursor-pointer hover:opacity-70 transition-opacity"
@@ -103,10 +111,13 @@ const Header = () => {
               className="cursor-pointer hover:opacity-70 transition-opacity"
             />
           </div>
-          <p className="truncate text-center">
+          <p className="flex-1 text-center truncate mx-4">
             Free shipping for orders over ₹2000
           </p>
-          <div className="hidden md:block w-20"></div>
+          <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-black">
+            <Phone size={14} className="text-black" />
+            <span>+91 1111111111</span>
+          </div>
         </div>
 
         {/* Main Navigation Row */}
@@ -221,13 +232,36 @@ const Header = () => {
             ))}
           </nav>
 
+          {/* Search Bar */}
+          <form
+            key={`desktop-search-${currentSearchParam}`}
+            onSubmit={(event) => {
+              event.preventDefault();
+              navigateToSearch(desktopSearchInputRef.current?.value || "");
+            }}
+            className="hidden md:flex flex-1 max-w-xl items-center rounded-full border border-gray-200 bg-gray-50/80 px-4 py-2"
+            role="search"
+            aria-label="Search products"
+          >
+            <Search size={16} className="text-gray-400 shrink-0" />
+            <input
+              ref={desktopSearchInputRef}
+              defaultValue={currentSearchParam}
+              type="search"
+              placeholder="Search products, categories, brands..."
+              className="w-full bg-transparent px-2 text-sm font-semibold text-gray-700 outline-none"
+            />
+            <button
+              type="submit"
+              className="rounded-full bg-black px-4 py-1.5 text-[11px] font-black uppercase tracking-wider text-[#facc15] hover:bg-gray-800 transition-colors cursor-pointer"
+            >
+              Search
+            </button>
+          </form>
+
           {/* Right: Phone, Auth & Cart Actions */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            <div className="hidden xl:flex items-center gap-2 text-xs md:text-sm font-semibold text-gray-500 mr-2 border-r pr-4">
-              <Phone size={14} className="text-yellow-500" />{" "}
-              <span>+91 1111111111</span>
-            </div>
-
+            
             {isAuthenticated ? (
               <div className="flex items-center gap-2 sm:gap-4">
                 <Link
@@ -336,6 +370,34 @@ const Header = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto py-6 px-6 space-y-4">
+          <form
+            key={`mobile-search-${currentSearchParam}`}
+            onSubmit={(event) => {
+              event.preventDefault();
+              navigateToSearch(mobileSearchInputRef.current?.value || "", {
+                closeMobile: true,
+              });
+            }}
+            className="mb-3 flex items-center rounded-full border border-gray-200 bg-gray-50 px-4 py-2"
+            role="search"
+            aria-label="Search products"
+          >
+            <Search size={16} className="text-gray-400 shrink-0" />
+            <input
+              ref={mobileSearchInputRef}
+              defaultValue={currentSearchParam}
+              type="search"
+              placeholder="Search products"
+              className="w-full bg-transparent px-2 text-sm font-semibold text-gray-700 outline-none"
+            />
+            <button
+              type="submit"
+              className="rounded-full bg-black px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#facc15]"
+            >
+              Go
+            </button>
+          </form>
+
           <nav className="space-y-2">
             {navItems.map((item) => (
               <div key={item.name} className="border-b border-gray-50 pb-2">

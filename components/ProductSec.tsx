@@ -197,6 +197,7 @@ const ProductSec = () => {
                         ? `/product/${product.id}?variant=${resolvedVariantId}`
                         : `/product/${product.id}`;
                       const isVariantReady = !product.hasVariants || Boolean(resolvedVariantId);
+                      const isPurchasable = product.stock > 0;
 
                       return (
                     <motion.div
@@ -286,7 +287,9 @@ const ProductSec = () => {
                         <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-gray-100 text-gray-700">
                           {product.category}
                         </span>
-                        <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-green-100 text-green-700">
+                        <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full ${
+                          isPurchasable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                        }`}>
                           {product.stock > 0 ? "In Stock" : "Out of Stock"}
                         </span>
                       </div>
@@ -322,7 +325,7 @@ const ProductSec = () => {
                       {/* Action Button (Pill Style) */}
                       <button
                         onClick={() => {
-                          if (!isVariantReady) {
+                          if (!isVariantReady || !isPurchasable) {
                             return;
                           }
 
@@ -334,10 +337,10 @@ const ProductSec = () => {
                             variantId: resolvedVariantId,
                           });
                         }}
-                        disabled={!isVariantReady}
+                        disabled={!isVariantReady || !isPurchasable}
                         className="w-full py-3 sm:py-4 border-2 border-gray-900 rounded-full text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] hover:bg-gray-900 hover:text-white transition-all duration-300 shadow-sm hover:shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
                       >
-                        Add to Cart
+                        {isPurchasable ? "Add to Cart" : "Out of Stock"}
                       </button>
                     </motion.div>
                     );

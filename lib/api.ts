@@ -243,8 +243,13 @@ export const authApi = {
 export const productApi = {
   create: (data: any) => api.post("/v1/products", data),
   list: (params?: Record<string, string | number | boolean>) => api.get("/v1/products", { params }),
+  search: (params?: Record<string, string | number | boolean>) => api.get("/v1/products/search", { params }),
   getById: (id: string | number) => api.get(`/v1/products/${id}`),
   remove: (id: string | number) => api.delete(`/v1/products/${id}`),
+};
+
+export const searchApi = {
+  suggestions: (params: { q: string; limit?: number }) => api.get("/v1/search/suggestions", { params }),
 };
 
 export const cartApi = {
@@ -371,6 +376,42 @@ export const adminCouponApi = {
   toggle: (id: number | string, isActive: boolean) =>
     api.patch(`/v1/admin/coupons/${id}/toggle`, { isActive }),
   remove: (id: number | string) => api.delete(`/v1/admin/coupons/${id}`),
+};
+
+export const adminInventoryApi = {
+  list: (params?: Record<string, string | number | boolean>) =>
+    api.get("/v1/admin/inventory", { params }),
+  getById: (id: number | string) => api.get(`/v1/admin/inventory/${id}`),
+  history: (params?: Record<string, string | number | boolean>) =>
+    api.get("/v1/admin/inventory/history", { params }),
+  lowStock: (params?: Record<string, string | number | boolean>) =>
+    api.get("/v1/admin/inventory/low-stock", { params }),
+  adjust: (id: number | string, data: {
+    quantityDelta: number;
+    reason?: string | null;
+    notes?: string | null;
+  }) => api.patch(`/v1/admin/inventory/${id}/adjust`, data),
+  restock: (id: number | string, data: {
+    quantity: number;
+    reason?: string | null;
+    notes?: string | null;
+  }) => api.patch(`/v1/admin/inventory/${id}/restock`, data),
+  damaged: (id: number | string, data: {
+    quantity: number;
+    reason?: string | null;
+    notes?: string | null;
+  }) => api.patch(`/v1/admin/inventory/${id}/damaged`, data),
+  bulkUpdate: (data: {
+    updates: Array<{
+      inventoryId: number;
+      quantityDelta: number;
+      movementType?: string;
+      referenceType?: string;
+      referenceId?: string | number | null;
+      reason?: string | null;
+      notes?: string | null;
+    }>;
+  }) => api.post("/v1/admin/inventory/bulk-update", data),
 };
 
 export const paymentApi = {

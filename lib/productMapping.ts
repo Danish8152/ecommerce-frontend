@@ -6,6 +6,11 @@ export type ApiCategory = {
 
 export type ApiInventory = {
   quantity?: number;
+  availableQuantity?: number;
+  reservedQuantity?: number;
+  effectiveQuantity?: number;
+  lowStockThreshold?: number | null;
+  allowBackorder?: boolean;
 };
 
 export type ApiVariant = {
@@ -104,6 +109,7 @@ export type UiVariant = {
   comparePrice: number | null;
   image: string;
   stock: number;
+  allowBackorder: boolean;
   status: string;
   attributes: UiSpec[];
 };
@@ -238,6 +244,44 @@ const toNumber = (value: unknown, fallback = 0) => {
   return Number.isFinite(parsed) ? parsed : fallback;
 };
 
+const resolveInventorySellableQuantity = (inventory?: ApiInventory | null) => {
+  if (!inventory) {
+    return 0;
+  }
+
+  const explicitEffective = toNumber(inventory.effectiveQuantity, NaN);
+  if (Number.isFinite(explicitEffective)) {
+    return Math.max(explicitEffective, 0);
+  }
+
+  const explicitAvailable = toNumber(inventory.availableQuantity, NaN);
+  const availableQuantity = Number.isFinite(explicitAvailable)
+    ? explicitAvailable
+    : toNumber(inventory.quantity, 0);
+  const reservedQuantity = Math.max(toNumber(inventory.reservedQuantity, 0), 0);
+
+  return Math.max(availableQuantity - reservedQuantity, 0);
+};
+
+const resolveVariantSellableQuantity = (variant: ApiVariant) => {
+  return resolveInventorySellableQuantity(variant.inventory);
+};
+
+const hasVariantInventoryData = (variant: ApiVariant) => {
+  const inventory = variant.inventory;
+
+  if (!inventory) {
+    return false;
+  }
+
+  return [
+    inventory.effectiveQuantity,
+    inventory.availableQuantity,
+    inventory.quantity,
+    inventory.reservedQuantity,
+  ].some((value) => typeof value !== "undefined");
+};
+
 const formatPrice = (value: unknown) => {
   const numberValue = toNumber(value, 0);
   return numberValue.toFixed(2);
@@ -300,14 +344,22 @@ const resolveGallery = (product: ApiProduct) => {
 };
 
 const resolveStock = (product: ApiProduct) => {
+  const variants = product.variants || [];
+
+  if (variants.length > 0 && variants.some(hasVariantInventoryData)) {
+    return variants.reduce((sum, variant) => {
+      return sum + resolveVariantSellableQuantity(variant);
+    }, 0);
+  }
+
   const totalStock = toNumber(product.totalStock, NaN);
 
   if (Number.isFinite(totalStock)) {
     return totalStock;
   }
 
-  return (product.variants || []).reduce((sum, variant) => {
-    return sum + toNumber(variant.inventory?.quantity, 0);
+  return variants.reduce((sum, variant) => {
+    return sum + resolveVariantSellableQuantity(variant);
   }, 0);
 };
 
@@ -351,7 +403,8 @@ const resolveDefaultVariantId = (product: ApiProduct) => {
 
   const inStockVariant = variants.find((variant) => {
     const variantId = toNumber(variant.id, NaN);
-    return Number.isFinite(variantId) && toNumber(variant.inventory?.quantity, 0) > 0;
+    const canSell = resolveVariantSellableQuantity(variant) > 0 || Boolean(variant.inventory?.allowBackorder);
+    return Number.isFinite(variantId) && canSell;
   });
 
   if (inStockVariant?.id) {
@@ -371,7 +424,9 @@ const resolveDetailDefaultVariantId = (baseDefaultVariantId: number | null, vari
     }
   }
 
-  const inStockVariant = variants.find((variant) => variant.stock > 0 && variant.status === "active");
+  const inStockVariant = variants.find(
+    (variant) => (variant.stock > 0 || variant.allowBackorder) && variant.status === "active",
+  );
   if (inStockVariant) {
     return inStockVariant.id;
   }
@@ -510,7 +565,8 @@ const mapVariantToUiVariant = (variant: ApiVariant): UiVariant | null => {
       normalizeImageSrc(String(variant.image || "")) ||
       variantGalleryImage ||
       FALLBACK_IMAGE,
-    stock: toNumber(variant.inventory?.quantity, 0),
+    stock: resolveVariantSellableQuantity(variant),
+    allowBackorder: Boolean(variant.inventory?.allowBackorder),
     status: String(variant.status || "active"),
     attributes: attributePairs,
   };

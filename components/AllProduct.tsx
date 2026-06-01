@@ -13,9 +13,13 @@ import { ApiProduct, mapApiProductToUiProduct, UiProduct } from "@/lib/productMa
 
 interface AllProductProps {
   showFilter?: boolean;
+  initialSearch?: string;
 }
 
-const AllProduct: React.FC<AllProductProps> = ({ showFilter = false }) => {
+const AllProduct: React.FC<AllProductProps> = ({
+  showFilter = false,
+  initialSearch = "",
+}) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -28,12 +32,16 @@ const AllProduct: React.FC<AllProductProps> = ({ showFilter = false }) => {
 
     const loadProducts = async () => {
       try {
+        setLoading(true);
         setLoadError("");
+
+        const normalizedSearch = initialSearch.trim();
         const response = await productApi.list({
           page: 1,
           limit: 60,
           status: "active",
-          sort: "createdAt_desc",
+          sort: normalizedSearch ? "relevance" : "newest",
+          ...(normalizedSearch ? { search: normalizedSearch } : {}),
         });
 
         const items = (response.data?.data?.items || []) as ApiProduct[];
@@ -61,7 +69,7 @@ const AllProduct: React.FC<AllProductProps> = ({ showFilter = false }) => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [initialSearch]);
 
   const categories = useMemo(() => {
     return ["All", ...Array.from(new Set(products.map((product) => product.category)))];
@@ -88,6 +96,11 @@ const AllProduct: React.FC<AllProductProps> = ({ showFilter = false }) => {
             Discover a wide range of organic and crunchy nut snacks packed with
             nutrition and flavor for your everyday lifestyle.
           </p>
+          {initialSearch.trim() && (
+            <p className="mt-3 text-sm font-black uppercase tracking-widest text-gray-700">
+              Showing results for: <span className="text-yellow-600">{initialSearch.trim()}</span>
+            </p>
+          )}
         </div>
 
         {/* Category Filters (Optional) */}
@@ -140,6 +153,7 @@ const AllProduct: React.FC<AllProductProps> = ({ showFilter = false }) => {
                 ? `/product/${product.id}?variant=${resolvedVariantId}`
                 : `/product/${product.id}`;
               const isVariantReady = !product.hasVariants || Boolean(resolvedVariantId);
+              const isPurchasable = product.stock > 0;
 
               return (
                 <motion.div
@@ -234,7 +248,9 @@ const AllProduct: React.FC<AllProductProps> = ({ showFilter = false }) => {
                   <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-gray-100 text-gray-700">
                     {product.category}
                   </span>
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-green-100 text-green-700">
+                  <span className={`text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full ${
+                    isPurchasable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                  }`}>
                     {product.stock > 0 ? "In Stock" : "Out of Stock"}
                   </span>
                 </div>
@@ -271,7 +287,7 @@ const AllProduct: React.FC<AllProductProps> = ({ showFilter = false }) => {
                 {/* Action Button */}
                 <button
                   onClick={() => {
-                    if (!isVariantReady) {
+                    if (!isVariantReady || !isPurchasable) {
                       return;
                     }
 
@@ -283,10 +299,10 @@ const AllProduct: React.FC<AllProductProps> = ({ showFilter = false }) => {
                       variantId: resolvedVariantId,
                     });
                   }}
-                  disabled={!isVariantReady}
+                  disabled={!isVariantReady || !isPurchasable}
                   className="w-full py-3.5 border-2 border-gray-900 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-gray-900 hover:text-white transition-all cursor-pointer shadow-xs hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Add to Cart
+                  {isPurchasable ? "Add to Cart" : "Out of Stock"}
                 </button>
                 </motion.div>
               );

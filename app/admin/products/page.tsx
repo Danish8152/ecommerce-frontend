@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Plus, Search, Edit, Trash2, Loader2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { productApi } from "@/lib/api";
 import { ApiProduct, mapApiProductToUiProduct, UiProduct } from "@/lib/productMapping";
 import { toast } from "react-hot-toast";
@@ -25,8 +26,10 @@ const getErrorMessage = (error: unknown, fallback: string) => {
 };
 
 export default function AdminProducts() {
+  const searchParams = useSearchParams();
+  const searchFromUrl = (searchParams.get("search") || "").trim();
   const [products, setProducts] = useState<UiProduct[]>([]);
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(() => searchFromUrl);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -43,7 +46,8 @@ export default function AdminProducts() {
         const response = await productApi.list({
           page: 1,
           limit: 100,
-          sort: "createdAt_desc",
+          sort: searchFromUrl ? "relevance" : "newest",
+          ...(searchFromUrl ? { search: searchFromUrl } : {}),
         });
 
         const items = (response.data?.data?.items || []) as ApiProduct[];
@@ -72,7 +76,7 @@ export default function AdminProducts() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [searchFromUrl]);
 
   const categories = useMemo(() => {
     return ["All", ...Array.from(new Set(products.map((product) => product.category)))];

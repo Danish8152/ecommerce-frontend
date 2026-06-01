@@ -74,7 +74,7 @@ export default function ProductDetailPage() {
     }
 
     const inStockVariant = variants.find(
-      (variant) => variant.stock > 0 && variant.status === "active",
+      (variant) => (variant.stock > 0 || variant.allowBackorder) && variant.status === "active",
     );
     if (inStockVariant) {
       return inStockVariant.id;
@@ -148,9 +148,6 @@ export default function ProductDetailPage() {
     setActiveImage(0);
   }, [product, preferredVariantId]);
 
-  const handleIncrease = () => setQuantity((prev) => prev + 1);
-  const handleDecrease = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-
   const selectedVariant = useMemo(() => {
     if (!product || !product.variants.length) {
       return null;
@@ -162,6 +159,8 @@ export default function ProductDetailPage() {
   const currentPrice = selectedVariant ? selectedVariant.price : Number(product?.price || 0);
   const currentComparePrice = selectedVariant?.comparePrice ?? product?.oldPriceValue ?? null;
   const currentStock = selectedVariant ? selectedVariant.stock : product?.stock ?? 0;
+  const currentAllowBackorder = selectedVariant?.allowBackorder ?? false;
+  const canPurchaseCurrentSelection = currentStock > 0 || currentAllowBackorder;
 
   const displayImages = useMemo(() => {
     if (!product) {
@@ -188,21 +187,48 @@ export default function ProductDetailPage() {
   const resolvedVariantId = selectedVariant?.id ?? product?.defaultVariantId ?? null;
   const canAddToCart = !product?.hasVariants || Boolean(resolvedVariantId);
 
+  useEffect(() => {
+    if (currentAllowBackorder) {
+      return;
+    }
+
+    const maxQuantity = Math.max(currentStock, 1);
+    setQuantity((previous) => Math.min(previous, maxQuantity));
+  }, [currentAllowBackorder, currentStock]);
+
+  const handleIncrease = () => {
+    if (currentAllowBackorder) {
+      setQuantity((prev) => prev + 1);
+      return;
+    }
+
+    setQuantity((prev) => {
+      const maxQuantity = Math.max(currentStock, 1);
+      return Math.min(prev + 1, maxQuantity);
+    });
+  };
+
+  const handleDecrease = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
   const handleAddCustomQuantity = () => {
     if (!product) {
       return;
     }
 
-    if (!canAddToCart) {
+    if (!canAddToCart || !canPurchaseCurrentSelection) {
       return;
     }
+
+    const safeQuantity = currentAllowBackorder
+      ? quantity
+      : Math.min(quantity, Math.max(currentStock, 1));
 
     void addToCart({
       id: buildSelectionKey(Number(product.id), resolvedVariantId ?? null),
       name: selectedVariant ? `${product.name} - ${selectedVariant.title}` : product.name,
       price: currentPrice,
       image: selectedVariant?.image || product.image,
-      quantity,
+      quantity: safeQuantity,
       variantId: resolvedVariantId,
     });
   };
@@ -354,7 +380,14 @@ export default function ProductDetailPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {product.variants.map((variant) => {
                     const isActive = variant.id === selectedVariant?.id;
-                    const isDisabled = variant.status === "inactive" || variant.stock <= 0;
+                    const isDisabled = variant.status === "inactive" || (variant.stock <= 0 && !variant.allowBackorder);
+                    const variantStockLabel = variant.allowBackorder && variant.stock <= 0
+                      ? "Backorder"
+                      : variant.stock > 0
+                        ? variant.stock <= 5
+                          ? `Only ${variant.stock} left`
+                          : "In Stock"
+                        : "Out of Stock";
 
                     return (
                       <button
@@ -372,7 +405,7 @@ export default function ProductDetailPage() {
                       >
                         <p className="text-sm font-black text-gray-900">{variant.title}</p>
                         <p className="text-xs font-bold text-gray-500 mt-1">
-                          ₹{variant.price.toFixed(2)} • {variant.stock > 0 ? "In Stock" : "Out of Stock"}
+                          ₹{variant.price.toFixed(2)} • {variantStockLabel}
                         </p>
                         {variant.attributes.length > 0 && (
                           <p className="text-[11px] font-semibold text-gray-500 mt-1 line-clamp-1">
@@ -392,7 +425,13 @@ export default function ProductDetailPage() {
             </p>
 
             <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-              {currentStock > 0 ? "In Stock" : "Out of Stock"}
+              {currentAllowBackorder && currentStock <= 0
+                ? "Available On Backorder"
+                : currentStock > 0
+                  ? currentStock <= 5
+                    ? `Only ${currentStock} left`
+                    : "In Stock"
+                  : "Out of Stock"}
             </p>
 
             {/* Key Benefits */}
@@ -420,7 +459,8 @@ export default function ProductDetailPage() {
                 <span className="w-12 text-center font-black text-lg text-gray-900">{quantity}</span>
                 <button
                   onClick={handleIncrease}
-                  className="p-2 text-gray-500 hover:text-black transition-colors cursor-pointer"
+                  disabled={!currentAllowBackorder && quantity >= Math.max(currentStock, 1)}
+                  className="p-2 text-gray-500 hover:text-black transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   <Plus size={18} />
                 </button>
@@ -428,11 +468,11 @@ export default function ProductDetailPage() {
 
               <button
                 onClick={handleAddCustomQuantity}
-                disabled={currentStock <= 0 || !canAddToCart}
+                disabled={!canPurchaseCurrentSelection || !canAddToCart}
                 className="flex-1 bg-[#facc15] text-black py-5 px-8 rounded-full font-black text-sm uppercase tracking-[0.2em] shadow-xl hover:bg-black hover:text-white transition-all duration-300 flex items-center justify-center gap-3 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:bg-[#facc15] disabled:hover:text-black"
               >
                 <ShoppingBasket size={20} />
-                {currentStock > 0
+                {canPurchaseCurrentSelection
                   ? `Add to Cart • ₹${(currentPrice * quantity).toFixed(2)}`
                   : "Out of Stock"}
               </button>
@@ -553,6 +593,7 @@ export default function ProductDetailPage() {
                 ? `/product/${rec.id}?variant=${resolvedVariantId}`
                 : `/product/${rec.id}`;
               const isVariantReady = !rec.hasVariants || Boolean(resolvedVariantId);
+              const isPurchasable = rec.stock > 0;
 
               return (
                 <motion.div
@@ -632,7 +673,7 @@ export default function ProductDetailPage() {
                 {/* Action Button */}
                 <button
                   onClick={() => {
-                    if (!isVariantReady) {
+                    if (!isVariantReady || !isPurchasable) {
                       return;
                     }
 
@@ -644,10 +685,10 @@ export default function ProductDetailPage() {
                       variantId: resolvedVariantId,
                     });
                   }}
-                  disabled={!isVariantReady}
+                  disabled={!isVariantReady || !isPurchasable}
                   className="w-full py-3.5 border-2 border-gray-900 rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-gray-900 hover:text-white transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Add to Cart
+                  {isPurchasable ? "Add to Cart" : "Out of Stock"}
                 </button>
                 </motion.div>
               );

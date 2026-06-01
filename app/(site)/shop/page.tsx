@@ -3,8 +3,12 @@ import React from "react";
 import AllProduct from "@/components/AllProduct";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 
 const ShopPage = () => {
+  const searchParams = useSearchParams();
+  const searchText = searchParams.get("search") || "";
+
   return (
     <main className="pt-24 min-h-screen bg-[#fdfbf9]">
       {/* Top Banner */}
@@ -45,13 +49,15 @@ const ShopPage = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-sm md:text-lg text-gray-200 font-medium mt-4 max-w-2xl mx-auto leading-relaxed"
           >
-            Explore our curated selection of premium dry fruits, artisanal preserves, natural honey, and pure Kashmiri saffron.
+            {searchText.trim()
+              ? `Search results for "${searchText.trim()}" across our premium catalog.`
+              : "Explore our curated selection of premium dry fruits, artisanal preserves, natural honey, and pure Kashmiri saffron."}
           </motion.p>
         </div>
       </section>
 
       {/* Products Component */}
-      <AllProduct showFilter={true} />
+      <AllProduct showFilter={true} initialSearch={searchText} />
     </main>
   );
 };

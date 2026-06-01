@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Users, Package, ShoppingBag, Warehouse, Tag, Star, Image as ImageIcon, ShieldAlert, Settings, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, Package, ShoppingBag, Warehouse, Tag, Star, Image as ImageIcon, ShieldAlert, Settings, LogOut, Menu, X, Search } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 const isAdminRole = (role?: string | null) => {
@@ -23,6 +23,7 @@ export default function AdminLayout({
   const { adminUser, loading, isAdminAuthenticated, logoutAdmin } = useAuth();
   const pathname = usePathname() || "";
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [adminSearch, setAdminSearch] = useState("");
   const isAdminLoginRoute = pathname === "/admin/login";
   const hasAdminAccess = isAdminAuthenticated && isAdminRole(adminUser?.role);
 
@@ -77,6 +78,14 @@ export default function AdminLayout({
   };
 
   const closeSidebar = () => setIsSidebarOpen(false);
+  const submitAdminSearch = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const query = adminSearch.trim();
+    router.push(query ? `/admin/products?search=${encodeURIComponent(query)}` : "/admin/products");
+    closeSidebar();
+  };
+
   const handleLogout = () => {
     logoutAdmin();
     closeSidebar();
@@ -284,6 +293,28 @@ export default function AdminLayout({
             <h1 className="font-black text-lg sm:text-xl tracking-tight uppercase truncate">{getPageTitle()}</h1>
           </div>
           <div className="flex items-center gap-4 shrink-0">
+            <form
+              onSubmit={submitAdminSearch}
+              className="hidden xl:flex items-center rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5"
+              role="search"
+              aria-label="Search admin products"
+            >
+              <Search size={14} className="text-gray-400" />
+              <input
+                value={adminSearch}
+                onChange={(event) => setAdminSearch(event.target.value)}
+                type="search"
+                placeholder="Search products"
+                className="w-48 bg-transparent px-2 text-xs font-semibold text-gray-700 outline-none"
+              />
+              <button
+                type="submit"
+                className="rounded-full bg-black px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#facc15] hover:bg-gray-800 transition-colors cursor-pointer"
+              >
+                Go
+              </button>
+            </form>
+
             <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gray-900 rounded-full flex items-center justify-center text-[#facc15] font-black text-xs sm:text-sm border-2 border-gray-100 shadow-sm">
               {(adminUser?.firstName?.[0] || adminUser?.email?.[0] || "A").toUpperCase()}
             </div>
