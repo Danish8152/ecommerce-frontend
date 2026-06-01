@@ -39,7 +39,7 @@ export default function AboutPage() {
   return (
     <main className="pt-24 min-h-screen bg-[#fdfbf9]">
       {/* Top Hero Banner */}
-      <section className="relative w-full overflow-hidden h-[380px] md:h-[480px] flex items-center justify-center">
+      <section className="relative w-full overflow-hidden h-\[380px] md:h-\[480px] flex items-center justify-center">
         <Image
           src="/Img/hero.webp"
           alt="PelTown Heritage"

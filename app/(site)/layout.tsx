@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Header from "@/layout/Header";
 import Footer from "@/layout/Footer";
 
@@ -8,7 +9,9 @@ export default function SiteLayout({
 }>) {
   return (
     <>
-      <Header />
+      <Suspense fallback={null}>
+        <Header />
+      </Suspense>
       {children}
       <Footer />
     </>
