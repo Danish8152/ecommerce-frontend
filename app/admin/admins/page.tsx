@@ -57,7 +57,7 @@ export default function AdminAdmins() {
         </div>
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="flex items-center justify-center gap-2 bg-gray-900 text-[#facc15] px-6 py-3 rounded-full font-black text-sm uppercase tracking-widest hover:bg-black transition-all shadow-lg hover:shadow-[#facc15]/20 cursor-pointer"
+          className="flex items-center justify-center gap-2 bg-[#facc15] text-black px-6 py-3 rounded-full font-black text-sm uppercase tracking-widest hover:bg-yellow-500 transition-all shadow-lg hover:shadow-[#facc15]/20 cursor-pointer"
         >
           <Plus size={18} />
           Invite Team Member
@@ -195,7 +195,7 @@ export default function AdminAdmins() {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-full font-black bg-black hover:bg-gray-900 text-[#facc15] uppercase tracking-wider transition-all shadow-md cursor-pointer"
+                  className="px-6 py-3 rounded-full font-black bg-[#facc15] hover:bg-yellow-500 text-black uppercase tracking-wider transition-all shadow-md cursor-pointer"
                 >
                   Send Invitation
                 </button>

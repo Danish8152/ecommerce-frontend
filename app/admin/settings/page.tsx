@@ -45,7 +45,7 @@ export default function AdminSettings() {
         <button
           onClick={() => setActiveTab("general")}
           className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "general" ? "bg-black text-[#facc15] shadow-lg" : "bg-white text-gray-500 hover:text-black hover:bg-gray-50"
+            activeTab === "general" ? "bg-[#facc15] text-black shadow-lg" : "bg-white text-gray-500 hover:text-black hover:bg-gray-50"
           }`}
         >
           <Store size={16} />
@@ -54,7 +54,7 @@ export default function AdminSettings() {
         <button
           onClick={() => setActiveTab("payment")}
           className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "payment" ? "bg-black text-[#facc15] shadow-lg" : "bg-white text-gray-500 hover:text-black hover:bg-gray-50"
+            activeTab === "payment" ? "bg-[#facc15] text-black shadow-lg" : "bg-white text-gray-500 hover:text-black hover:bg-gray-50"
           }`}
         >
           <DollarSign size={16} />
@@ -63,7 +63,7 @@ export default function AdminSettings() {
         <button
           onClick={() => setActiveTab("shipping")}
           className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "shipping" ? "bg-black text-[#facc15] shadow-lg" : "bg-white text-gray-500 hover:text-black hover:bg-gray-50"
+            activeTab === "shipping" ? "bg-[#facc15] text-black shadow-lg" : "bg-white text-gray-500 hover:text-black hover:bg-gray-50"
           }`}
         >
           <Truck size={16} />
@@ -72,7 +72,7 @@ export default function AdminSettings() {
         <button
           onClick={() => setActiveTab("notifications")}
           className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer whitespace-nowrap ${
-            activeTab === "notifications" ? "bg-black text-[#facc15] shadow-lg" : "bg-white text-gray-500 hover:text-black hover:bg-gray-50"
+            activeTab === "notifications" ? "bg-[#facc15] text-black shadow-lg" : "bg-white text-gray-500 hover:text-black hover:bg-gray-50"
           }`}
         >
           <Bell size={16} />

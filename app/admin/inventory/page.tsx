@@ -366,7 +366,7 @@ export default function AdminInventory() {
               void loadInventory({ showLoader: false });
             }}
             disabled={refreshing}
-            className="flex items-center gap-2 px-6 py-3 rounded-full font-black text-sm uppercase tracking-widest transition-all cursor-pointer bg-gray-900 text-[#facc15] hover:bg-black disabled:opacity-60 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-6 py-3 rounded-full font-black text-sm uppercase tracking-widest transition-all cursor-pointer bg-[#facc15] text-black hover:bg-yellow-500 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {refreshing ? <Loader2 size={16} className="animate-spin" /> : <RefreshCw size={16} />}
             Refresh
@@ -418,7 +418,7 @@ export default function AdminInventory() {
               onClick={() => {
                 void loadInventory();
               }}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest bg-gray-900 text-[#facc15] hover:bg-black transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest bg-[#facc15] text-black hover:bg-yellow-500 transition-colors cursor-pointer"
             >
               <RefreshCw size={14} /> Retry
             </button>
@@ -517,7 +517,7 @@ export default function AdminInventory() {
                               void handleRestock(item, 25);
                             }}
                             disabled={pendingForRow}
-                            className="flex items-center gap-1 px-3 py-1.5 bg-gray-900 hover:bg-black text-[#facc15] font-black text-xs rounded-xl transition-all shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                            className="flex items-center gap-1 px-3 py-1.5 bg-[#facc15] hover:bg-yellow-500 text-black font-black text-xs rounded-xl transition-all shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed\"
                             title="Add 25 units"
                           >
                             {pendingActionKey === `${item.id}:restock:25` ? (
@@ -533,7 +533,7 @@ export default function AdminInventory() {
                               void handleRestock(item, 50);
                             }}
                             disabled={pendingForRow}
-                            className="flex items-center gap-1 px-3 py-1.5 bg-gray-900 hover:bg-black text-[#facc15] font-black text-xs rounded-xl transition-all shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                            className="flex items-center gap-1 px-3 py-1.5 bg-[#facc15] hover:bg-yellow-500 text-black font-black text-xs rounded-xl transition-all shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                             title="Add 50 units"
                           >
                             {pendingActionKey === `${item.id}:restock:50` ? (

@@ -122,7 +122,7 @@ export default function AboutPage() {
           viewport={{ once: true }}
           className="space-y-6"
         >
-          <span className="bg-black text-[#facc15] font-black text-xs uppercase tracking-widest px-4 py-1.5 rounded-full">
+          <span className="bg-[#facc15] text-black font-black text-xs uppercase tracking-widest px-4 py-1.5 rounded-full">
             Artisanal Excellence
           </span>
           <h2 className="text-3xl sm:text-5xl font-black text-gray-900 tracking-tighter uppercase leading-tight">

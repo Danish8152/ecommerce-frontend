@@ -480,7 +480,7 @@ export default function AdminOrders() {
         </div>
         <button
           onClick={() => alert("Exporting orders report...")}
-          className="flex items-center justify-center gap-2 bg-gray-900 text-[#facc15] px-6 py-3 rounded-full font-black text-sm uppercase tracking-widest hover:bg-black transition-all shadow-lg hover:shadow-[#facc15]/20 cursor-pointer"
+          className="flex items-center justify-center gap-2 bg-[#facc15] text-black px-6 py-3 rounded-full font-black text-sm uppercase tracking-widest hover:bg-yellow-500 transition-all shadow-lg hover:shadow-[#facc15]/20 cursor-pointer"
         >
           <Download size={18} />
           Export Orders
@@ -688,7 +688,7 @@ export default function AdminOrders() {
               </div>
               <button
                 onClick={() => setIsViewModalOpen(false)}
-                className="bg-black text-[#facc15] px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-gray-900 transition-all cursor-pointer"
+                className="bg-[#facc15] text-black px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-yellow-500 transition-all cursor-pointer"
               >
                 Close
               </button>

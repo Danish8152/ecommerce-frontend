@@ -918,7 +918,7 @@ const CheckoutPage = () => {
                       type="button"
                       onClick={handleApplyCoupon}
                       disabled={isApplyingCoupon}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-xl bg-black text-[#facc15] text-[11px] font-black uppercase tracking-wider disabled:opacity-60"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-2 rounded-xl bg-[#facc15] text-black text-[11px] font-black uppercase tracking-wider disabled:opacity-60 hover:bg-yellow-500"
                     >
                       Apply
                     </button>

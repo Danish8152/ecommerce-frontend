@@ -146,7 +146,7 @@ const ContactPage = () => {
                     setFormSubmitted(false);
                     setFormData({ name: "", email: "", subject: "", message: "" });
                   }}
-                  className="mt-8 px-8 py-4 bg-black text-[#facc15] font-black text-xs uppercase tracking-widest rounded-full hover:bg-[#facc15] hover:text-black transition-all cursor-pointer"
+                  className="mt-8 px-8 py-4 bg-[#facc15] text-black font-black text-xs uppercase tracking-widest rounded-full hover:bg-yellow-500 hover:text-black transition-all cursor-pointer"
                 >
                   Send Another Message
                 </button>

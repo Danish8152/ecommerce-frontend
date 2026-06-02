@@ -309,7 +309,7 @@ export default function AdminLayout({
               />
               <button
                 type="submit"
-                className="rounded-full bg-black px-3 py-1 text-[10px] font-black uppercase tracking-wider text-[#facc15] hover:bg-gray-800 transition-colors cursor-pointer"
+                className="rounded-full bg-[#facc15] px-3 py-1 text-[10px] font-black uppercase tracking-wider text-black hover:bg-yellow-500 transition-colors cursor-pointer"
               >
                 Go
               </button>

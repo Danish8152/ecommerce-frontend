@@ -562,7 +562,7 @@ export default function OrderDetailsPage() {
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center font-black text-sm z-10 transition-all duration-300 shadow-md ${
                     step.done
-                      ? "bg-black text-[#facc15] ring-4 ring-yellow-100"
+                      ? "bg-[#facc15] text-black ring-4 ring-yellow-100"
                       : "bg-gray-100 text-gray-400 border-2 border-gray-200"
                   }`}
                 >
