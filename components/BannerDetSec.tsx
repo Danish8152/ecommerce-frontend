@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 const BannerDetSec = () => {
   return (
-    <section className="relative w-full overflow-hidden min-h-[600px] flex items-center justify-center py-24">
+    <section className="relative w-full overflow-hidden min-h-\[600px] flex items-center justify-center py-24">
       {/* Background Image */}
       <Image
         src="/Img/mockup.webp"

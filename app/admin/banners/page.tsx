@@ -48,6 +48,16 @@ const resolveBannerImage = (value: string) => {
   return `/${value}`;
 };
 
+const generateTitleFromFilename = (filename: string): string => {
+  // Remove extension and convert to title case
+  const nameWithoutExt = filename.replace(/\.[^/.]+$/, "");
+  return nameWithoutExt
+    .split(/[-_\s]+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ")
+    .trim();
+};
+
 export default function AdminBanners() {
   const [banners, setBanners] = useState<HeroBanner[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -152,19 +162,24 @@ export default function AdminBanners() {
 
     setSelectedFile(file);
     setPreviewUrl(file ? URL.createObjectURL(file) : null);
+
+    // Auto-generate title from filename if title is empty
+    if (file && !newTitle.trim()) {
+      setNewTitle(generateTitleFromFilename(file.name));
+    }
   };
 
   const handleAddBanner = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const trimmedTitle = newTitle.trim();
-    if (!trimmedTitle) {
-      toast.error("Banner title is required");
+    if (!selectedFile) {
+      toast.error("Please select a hero banner image to upload");
       return;
     }
 
-    if (!selectedFile) {
-      toast.error("Please select a hero banner image to upload");
+    const trimmedTitle = newTitle.trim() || generateTitleFromFilename(selectedFile.name);
+    if (!trimmedTitle) {
+      toast.error("Could not generate banner title from filename");
       return;
     }
 
@@ -301,18 +316,17 @@ export default function AdminBanners() {
             </div>
             <form onSubmit={handleAddBanner} className="space-y-4 text-sm font-medium">
               <div>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Campaign Title</label>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Campaign Title <span className="text-gray-400 font-normal">(auto-generated from filename)</span></label>
                 <input
                   type="text"
-                  required
                   value={newTitle}
                   onChange={e => setNewTitle(e.target.value)}
-                  placeholder="e.g. Eid Mega Discount"
+                  placeholder="Leave blank to auto-generate from image name"
                   className="w-full bg-gray-50 rounded-xl px-4 py-3 border border-gray-200 focus:ring-2 focus:ring-[#facc15] outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Subtitle / Offer Details</label>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Subtitle / Offer Details <span className="text-gray-400 font-normal">(optional)</span></label>
                 <input
                   type="text"
                   value={newSubtitle}
@@ -322,7 +336,7 @@ export default function AdminBanners() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Target Link URL</label>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Target Link URL <span className="text-gray-400 font-normal">(optional)</span></label>
                 <input
                   type="text"
                   value={newLink}
