@@ -245,6 +245,7 @@ export const productApi = {
   list: (params?: Record<string, string | number | boolean>) => api.get("/v1/products", { params }),
   search: (params?: Record<string, string | number | boolean>) => api.get("/v1/products/search", { params }),
   getById: (id: string | number) => api.get(`/v1/products/${id}`),
+  update: (id: string | number, data: any) => api.put(`/v1/products/${id}`, data),
   remove: (id: string | number) => api.delete(`/v1/products/${id}`),
 };
 

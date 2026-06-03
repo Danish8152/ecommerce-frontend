@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Plus, Image as ImageIcon, Trash2, Link2, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Plus, Image as ImageIcon, Trash2, Link2, Eye, EyeOff, Loader2, Edit } from "lucide-react";
 import Image from "next/image";
 import { heroBannerApi, uploadApi } from "@/lib/api";
 import { toast } from "react-hot-toast";
@@ -48,19 +48,11 @@ const resolveBannerImage = (value: string) => {
   return `/${value}`;
 };
 
-const generateTitleFromFilename = (filename: string): string => {
-  // Remove extension and convert to title case
-  const nameWithoutExt = filename.replace(/\.[^/.]+$/, "");
-  return nameWithoutExt
-    .split(/[-_\s]+/)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ")
-    .trim();
-};
-
 export default function AdminBanners() {
   const [banners, setBanners] = useState<HeroBanner[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingBanner, setEditingBanner] = useState<HeroBanner | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -68,12 +60,19 @@ export default function AdminBanners() {
   const [deletingId, setDeletingId] = useState<number | string | null>(null);
   const [togglingId, setTogglingId] = useState<number | string | null>(null);
 
-  // Form state
+  // Add form state
   const [newTitle, setNewTitle] = useState("");
   const [newSubtitle, setNewSubtitle] = useState("");
-  const [newLink, setNewLink] = useState("/products");
+  const [newLink, setNewLink] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  // Edit form state
+  const [editTitle, setEditTitle] = useState("");
+  const [editSubtitle, setEditSubtitle] = useState("");
+  const [editLink, setEditLink] = useState("");
+  const [editSelectedFile, setEditSelectedFile] = useState<File | null>(null);
+  const [editPreviewUrl, setEditPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     let mounted = true;
@@ -116,6 +115,14 @@ export default function AdminBanners() {
       }
     };
   }, [previewUrl]);
+
+  useEffect(() => {
+    return () => {
+      if (editPreviewUrl && editPreviewUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(editPreviewUrl);
+      }
+    };
+  }, [editPreviewUrl]);
 
   const handleToggleActive = async (banner: HeroBanner) => {
     setTogglingId(banner.id);
@@ -162,11 +169,40 @@ export default function AdminBanners() {
 
     setSelectedFile(file);
     setPreviewUrl(file ? URL.createObjectURL(file) : null);
+  };
 
-    // Auto-generate title from filename if title is empty
-    if (file && !newTitle.trim()) {
-      setNewTitle(generateTitleFromFilename(file.name));
+  const handleEditFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+
+    if (editPreviewUrl && editPreviewUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(editPreviewUrl);
     }
+
+    setEditSelectedFile(file);
+    setEditPreviewUrl(file ? URL.createObjectURL(file) : null);
+  };
+
+  const openEditModal = (banner: HeroBanner) => {
+    setEditingBanner(banner);
+    setEditTitle(banner.title || "");
+    setEditSubtitle(banner.subtitle || "");
+    setEditLink(banner.link || "");
+    setEditSelectedFile(null);
+    setEditPreviewUrl(resolveBannerImage(banner.image));
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setEditingBanner(null);
+    setEditTitle("");
+    setEditSubtitle("");
+    setEditLink("");
+    setEditSelectedFile(null);
+    if (editPreviewUrl && editPreviewUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(editPreviewUrl);
+    }
+    setEditPreviewUrl(null);
   };
 
   const handleAddBanner = async (event: React.FormEvent) => {
@@ -177,17 +213,13 @@ export default function AdminBanners() {
       return;
     }
 
-    const trimmedTitle = newTitle.trim() || generateTitleFromFilename(selectedFile.name);
-    if (!trimmedTitle) {
-      toast.error("Could not generate banner title from filename");
-      return;
-    }
-
     setIsSaving(true);
 
     try {
       setIsUploading(true);
-      const uploadResponse = await uploadApi.uploadHeroBannerImage(selectedFile, trimmedTitle);
+      // Use the title for baseName, or filename if no title
+      const baseName = newTitle.trim() || selectedFile.name.replace(/\.[^/.]+$/, "");
+      const uploadResponse = await uploadApi.uploadHeroBannerImage(selectedFile, baseName);
       const imagePath = uploadResponse.data?.data?.path as string | undefined;
 
       if (!imagePath) {
@@ -197,7 +229,7 @@ export default function AdminBanners() {
       setIsUploading(false);
 
       const createResponse = await heroBannerApi.create({
-        title: trimmedTitle,
+        title: newTitle.trim() || "",
         subtitle: newSubtitle.trim() || null,
         link: newLink.trim() || null,
         image: imagePath,
@@ -212,12 +244,90 @@ export default function AdminBanners() {
       setIsAddModalOpen(false);
       setNewTitle("");
       setNewSubtitle("");
-      setNewLink("/products");
+      setNewLink("");
       setSelectedFile(null);
       setPreviewUrl(null);
       toast.success("Hero banner created");
     } catch (requestError: unknown) {
       toast.error(getErrorMessage(requestError, "Failed to create banner"));
+    } finally {
+      setIsUploading(false);
+      setIsSaving(false);
+    }
+  };
+
+  const handleEditBanner = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!editingBanner) return;
+
+    setIsSaving(true);
+
+    try {
+      let imagePath: string | undefined;
+
+      // If a new image was selected, upload it
+      if (editSelectedFile) {
+        setIsUploading(true);
+        const baseName = editTitle.trim() || editSelectedFile.name.replace(/\.[^/.]+$/, "");
+        const uploadResponse = await uploadApi.uploadHeroBannerImage(editSelectedFile, baseName);
+        imagePath = uploadResponse.data?.data?.path as string | undefined;
+
+        if (!imagePath) {
+          throw new Error("Image upload failed");
+        }
+        setIsUploading(false);
+      }
+
+      // Build update payload with only changed fields
+      const updatePayload: {
+        title?: string;
+        subtitle?: string | null;
+        link?: string | null;
+        image?: string;
+      } = {};
+
+      const trimmedTitle = editTitle.trim();
+      const trimmedSubtitle = editSubtitle.trim();
+      const trimmedLink = editLink.trim();
+
+      // Always send title (even if empty — allows clearing)
+      if (trimmedTitle !== (editingBanner.title || "")) {
+        updatePayload.title = trimmedTitle;
+      }
+
+      if (trimmedSubtitle !== (editingBanner.subtitle || "")) {
+        updatePayload.subtitle = trimmedSubtitle || null;
+      }
+
+      if (trimmedLink !== (editingBanner.link || "")) {
+        updatePayload.link = trimmedLink || null;
+      }
+
+      if (imagePath) {
+        updatePayload.image = imagePath;
+      }
+
+      // Only call update if something changed
+      if (Object.keys(updatePayload).length === 0) {
+        toast.success("No changes to save");
+        closeEditModal();
+        return;
+      }
+
+      const response = await heroBannerApi.update(editingBanner.id, updatePayload);
+      const updated = response.data?.data as HeroBanner | undefined;
+
+      setBanners((previous) =>
+        previous.map((entry) =>
+          String(entry.id) === String(editingBanner.id) ? (updated || { ...entry, ...updatePayload }) : entry,
+        ),
+      );
+
+      toast.success("Banner updated successfully");
+      closeEditModal();
+    } catch (requestError: unknown) {
+      toast.error(getErrorMessage(requestError, "Failed to update banner"));
     } finally {
       setIsUploading(false);
       setIsSaving(false);
@@ -257,7 +367,7 @@ export default function AdminBanners() {
               <div className="relative w-full h-56 bg-gray-100 overflow-hidden">
                 <Image
                   src={resolveBannerImage(banner.image)}
-                  alt={banner.title}
+                  alt={banner.title || "Hero banner"}
                   fill
                   sizes="100vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -277,7 +387,11 @@ export default function AdminBanners() {
                   </button>
                 </div>
                 <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <h3 className="text-xl font-black uppercase tracking-tight text-white drop-shadow-md">{banner.title}</h3>
+                  {banner.title ? (
+                    <h3 className="text-xl font-black uppercase tracking-tight text-white drop-shadow-md">{banner.title}</h3>
+                  ) : (
+                    <h3 className="text-sm font-semibold italic text-gray-300 drop-shadow-md">Image-only banner (no title)</h3>
+                  )}
                   {banner.subtitle ? (
                     <p className="text-xs font-semibold text-gray-200 mt-1 drop-shadow-sm">{banner.subtitle}</p>
                   ) : null}
@@ -287,9 +401,16 @@ export default function AdminBanners() {
               <div className="p-6 flex items-center justify-between bg-white border-t border-gray-50">
                 <div className="flex items-center gap-2 text-xs font-bold text-gray-500 truncate max-w-xs">
                   <Link2 size={16} className="text-[#facc15] shrink-0" />
-                  <span className="truncate">{banner.link || "/shop"}</span>
+                  <span className="truncate">{banner.link || "No link"}</span>
                 </div>
                 <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => openEditModal(banner)}
+                    className="p-2.5 bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-black rounded-xl transition-colors cursor-pointer"
+                    title="Edit Banner"
+                  >
+                    <Edit size={16} />
+                  </button>
                   <button
                     onClick={() => handleDelete(banner)}
                     disabled={deletingId === banner.id}
@@ -316,12 +437,12 @@ export default function AdminBanners() {
             </div>
             <form onSubmit={handleAddBanner} className="space-y-4 text-sm font-medium">
               <div>
-                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Campaign Title <span className="text-gray-400 font-normal">(auto-generated from filename)</span></label>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Title <span className="text-gray-400 font-normal">(optional — leave blank for image-only banner)</span></label>
                 <input
                   type="text"
                   value={newTitle}
                   onChange={e => setNewTitle(e.target.value)}
-                  placeholder="Leave blank to auto-generate from image name"
+                  placeholder="e.g. Summer Sale — or leave empty"
                   className="w-full bg-gray-50 rounded-xl px-4 py-3 border border-gray-200 focus:ring-2 focus:ring-[#facc15] outline-none"
                 />
               </div>
@@ -381,6 +502,94 @@ export default function AdminBanners() {
                   className="px-6 py-3 rounded-full font-black bg-[#facc15] hover:bg-yellow-500 text-black uppercase tracking-wider transition-all shadow-md cursor-pointer disabled:opacity-70"
                 >
                   {isUploading ? "Uploading..." : "Save Banner"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {isEditModalOpen && editingBanner && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div onClick={closeEditModal} className="fixed inset-0 bg-black/50 backdrop-blur-xs" />
+          <div className="relative bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 z-50 space-y-6">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+              <h3 className="text-xl font-black uppercase text-gray-900">Edit Hero Banner</h3>
+              <button onClick={closeEditModal} className="font-bold text-gray-400 hover:text-gray-900 cursor-pointer">✕</button>
+            </div>
+            <form onSubmit={handleEditBanner} className="space-y-4 text-sm font-medium">
+              <div>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Title <span className="text-gray-400 font-normal">(leave blank for image-only)</span></label>
+                <input
+                  type="text"
+                  value={editTitle}
+                  onChange={e => setEditTitle(e.target.value)}
+                  placeholder="e.g. Summer Sale — or leave empty for image-only"
+                  className="w-full bg-gray-50 rounded-xl px-4 py-3 border border-gray-200 focus:ring-2 focus:ring-[#facc15] outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Subtitle / Offer Details <span className="text-gray-400 font-normal">(optional)</span></label>
+                <input
+                  type="text"
+                  value={editSubtitle}
+                  onChange={e => setEditSubtitle(e.target.value)}
+                  placeholder="e.g. Save flat 30% on premium almonds"
+                  className="w-full bg-gray-50 rounded-xl px-4 py-3 border border-gray-200 focus:ring-2 focus:ring-[#facc15] outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-1">Target Link URL <span className="text-gray-400 font-normal">(optional)</span></label>
+                <input
+                  type="text"
+                  value={editLink}
+                  onChange={e => setEditLink(e.target.value)}
+                  placeholder="/products?category=dry-fruits"
+                  className="w-full bg-gray-50 rounded-xl px-4 py-3 border border-gray-200 focus:ring-2 focus:ring-[#facc15] outline-none font-mono text-xs"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase text-gray-500 mb-2">Banner Image</label>
+                <label className="relative w-full h-36 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl flex flex-col items-center justify-center text-gray-400 hover:border-[#facc15] transition-colors cursor-pointer overflow-hidden">
+                  {editPreviewUrl ? (
+                    <Image
+                      src={editPreviewUrl}
+                      alt="Hero banner preview"
+                      fill
+                      sizes="100vw"
+                      unoptimized
+                      className="object-cover"
+                    />
+                  ) : (
+                    <>
+                      <ImageIcon size={32} className="mb-2 text-gray-400" />
+                      <span className="text-xs font-bold text-gray-600">Click to replace banner image</span>
+                      <span className="text-[10px] text-gray-400">1920x800px recommended (WEBP/PNG)</span>
+                    </>
+                  )}
+                  <input type="file" accept="image/*" onChange={handleEditFileChange} className="hidden" />
+                </label>
+                {editPreviewUrl && !editSelectedFile ? (
+                  <p className="mt-1 text-[10px] text-gray-400 font-semibold">Current image shown. Select a new file to replace.</p>
+                ) : editSelectedFile ? (
+                  <p className="mt-1 text-[10px] text-green-600 font-semibold">New image selected: {editSelectedFile.name}</p>
+                ) : null}
+              </div>
+              <div className="pt-4 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={closeEditModal}
+                  className="px-6 py-3 rounded-full font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSaving || isUploading}
+                  className="px-6 py-3 rounded-full font-black bg-[#facc15] hover:bg-yellow-500 text-black uppercase tracking-wider transition-all shadow-md cursor-pointer disabled:opacity-70"
+                >
+                  {isUploading ? "Uploading..." : isSaving ? "Saving..." : "Update Banner"}
                 </button>
               </div>
             </form>

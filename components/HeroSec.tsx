@@ -113,6 +113,13 @@ const HeroSec = () => {
     return slides[currentIndex] || FALLBACK_SLIDES[0];
   }, [currentIndex, slides]);
 
+  const hasTextContent = useMemo(() => {
+    const title = (activeSlide.title || "").trim();
+    const subtitle = (activeSlide.subtitle || "").trim();
+    const link = (activeSlide.link || "").trim();
+    return Boolean(title || subtitle || link);
+  }, [activeSlide]);
+
   const nextSlide = () => {
     if (slides.length === 0) {
       return;
@@ -152,7 +159,7 @@ const HeroSec = () => {
           >
             <Image
               src={resolveImageSrc(activeSlide.image)}
-              alt={activeSlide.title}
+              alt={activeSlide.title || "Hero banner"}
               fill
               sizes="100vw"
               priority={currentIndex === 0}
@@ -162,51 +169,59 @@ const HeroSec = () => {
         </AnimatePresence>
       </div>
 
-      {/* Overlay for text readability */}
-      <div className="absolute inset-0 bg-black/30 z-10" />
+      {/* Overlay for text readability — reduced for image-only slides */}
+      <div className={`absolute inset-0 z-10 ${hasTextContent ? "bg-black/30" : "bg-black/10"}`} />
 
-      {/* Content Container */}
-      <div className="relative z-20 container mx-auto min-h-screen px-6 sm:px-12">
-        <div className="flex min-h-screen flex-col items-center justify-center text-center text-white pb-28 sm:pb-32 lg:pb-36">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`hero-copy-${activeSlide.id}`}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -24 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center"
-            >
-              <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-1.5 rounded-full mb-6 w-fit shadow-lg">
-                <Clock size={16} className="text-[#facc15]" />
-                <span className="text-xs font-black uppercase tracking-tighter">
-                  Limited Time Offer
-                </span>
-              </div>
+      {/* Content Container — only rendered when slide has text content */}
+      {hasTextContent ? (
+        <div className="relative z-20 container mx-auto min-h-screen px-6 sm:px-12">
+          <div className="flex min-h-screen flex-col items-center justify-center text-center text-white pb-28 sm:pb-32 lg:pb-36">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`hero-copy-${activeSlide.id}`}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -24 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="flex flex-col items-center"
+              >
+                {activeSlide.title ? (
+                  <>
+                    <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-1.5 rounded-full mb-6 w-fit shadow-lg">
+                      <Clock size={16} className="text-[#facc15]" />
+                      <span className="text-xs font-black uppercase tracking-tighter">
+                        Limited Time Offer
+                      </span>
+                    </div>
 
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black mb-6 drop-shadow-2xl">
-                {activeSlide.title}
-              </h1>
+                    <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black mb-6 drop-shadow-2xl">
+                      {activeSlide.title}
+                    </h1>
+                  </>
+                ) : null}
 
-              {activeSlide.subtitle ? (
-                <p className="text-sm sm:text-lg font-medium mb-8 text-gray-100 max-w-xl">
-                  {activeSlide.subtitle}
-                </p>
-              ) : null}
+                {activeSlide.subtitle ? (
+                  <p className="text-sm sm:text-lg font-medium mb-8 text-gray-100 max-w-xl">
+                    {activeSlide.subtitle}
+                  </p>
+                ) : null}
 
-              <Link href={activeSlide.link?.trim() || "/shop"} className="flex justify-center gap-4">
-                <button className="bg-[#facc15] text-black px-10 py-5 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-white transition-colors shadow-2xl group">
-                  Shop Now
-                  <ArrowRight
-                    size={18}
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
-                </button>
-              </Link>
-            </motion.div>
-          </AnimatePresence>
+                {activeSlide.link?.trim() ? (
+                  <Link href={activeSlide.link.trim()} className="flex justify-center gap-4">
+                    <button className="bg-[#facc15] text-black px-10 py-5 rounded-full font-black text-xs sm:text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-white transition-colors shadow-2xl group">
+                      Shop Now
+                      <ArrowRight
+                        size={18}
+                        className="group-hover:translate-x-1 transition-transform"
+                      />
+                    </button>
+                  </Link>
+                ) : null}
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
+      ) : null}
 
       <motion.div
         drag="x"

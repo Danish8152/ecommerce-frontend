@@ -217,9 +217,9 @@ export default function AdminProductsClient() {
                     </td>
                     <td className="px-8 py-5 text-right">
                       <div className="flex justify-end gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                        <button className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-black transition-colors cursor-pointer">
+                        <Link href={`/admin/products/edit?id=${product.id}`} className="p-2 hover:bg-gray-100 rounded-lg text-gray-400 hover:text-black transition-colors cursor-pointer">
                           <Edit size={18} />
-                        </button>
+                        </Link>
                         <button
                           onClick={() => handleDeleteProduct(product)}
                           disabled={deletingProductId === product.id}
