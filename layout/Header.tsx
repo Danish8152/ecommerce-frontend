@@ -112,7 +112,7 @@ const Header = () => {
             />
           </div>
           <p className="flex-1 text-center truncate mx-4">
-            Free shipping for orders over ₹2000
+            Free shipping for orders over ₹2000 TESTING PRODUCTION
           </p>
           <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-black">
             <Phone size={14} className="text-black" />
@@ -157,11 +157,10 @@ const Header = () => {
               >
                 <Link
                   href={item.href}
-                  className={`flex items-center gap-1 transition-colors duration-300 ${
-                    hoveredItem === item.name || isActive(item)
+                  className={`flex items-center gap-1 transition-colors duration-300 ${hoveredItem === item.name || isActive(item)
                       ? "text-yellow-600"
                       : "text-gray-800"
-                  }`}
+                    }`}
                 >
                   {item.name}
                   {item.name === "Shop" && (
@@ -188,43 +187,42 @@ const Header = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className={`absolute top-full left-0 mt-2 bg-white border border-gray-100 shadow-2xl rounded-sm overflow-hidden z-60 ${
-                        item.isMega
+                      className={`absolute top-full left-0 mt-2 bg-white border border-gray-100 shadow-2xl rounded-sm overflow-hidden z-60 ${item.isMega
                           ? "fixed left-0 right-0 mx-auto w-[90vw] max-w-7xl px-12 py-10 grid grid-cols-3 gap-12"
                           : "w-56 py-2"
-                      }`}
+                        }`}
                     >
                       {!item.isMega
                         ? item.subItems?.map((sub) => (
-                            <a
-                              key={sub}
-                              href="#"
-                              className="block px-6 py-3 text-[12px] text-gray-600 hover:text-yellow-600 hover:bg-green-50/50 transition-all duration-200"
-                            >
-                              {sub}
-                            </a>
-                          ))
+                          <a
+                            key={sub}
+                            href="#"
+                            className="block px-6 py-3 text-[12px] text-gray-600 hover:text-yellow-600 hover:bg-green-50/50 transition-all duration-200"
+                          >
+                            {sub}
+                          </a>
+                        ))
                         : item.megaMenu?.map((section) => (
-                            <div
-                              key={section.title}
-                              className="flex flex-col gap-6"
-                            >
-                              <h3 className="text-[14px] font-black border-b border-gray-100 pb-3 mb-2">
-                                {section.title}
-                              </h3>
-                              <div className="flex flex-col gap-3">
-                                {section.items.map((sub) => (
-                                  <a
-                                    key={sub}
-                                    href="#"
-                                    className="text-[12px] font-bold text-gray-500 hover:text-yellow-600 transition-colors"
-                                  >
-                                    {sub}
-                                  </a>
-                                ))}
-                              </div>
+                          <div
+                            key={section.title}
+                            className="flex flex-col gap-6"
+                          >
+                            <h3 className="text-[14px] font-black border-b border-gray-100 pb-3 mb-2">
+                              {section.title}
+                            </h3>
+                            <div className="flex flex-col gap-3">
+                              {section.items.map((sub) => (
+                                <a
+                                  key={sub}
+                                  href="#"
+                                  className="text-[12px] font-bold text-gray-500 hover:text-yellow-600 transition-colors"
+                                >
+                                  {sub}
+                                </a>
+                              ))}
                             </div>
-                          ))}
+                          </div>
+                        ))}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -261,7 +259,7 @@ const Header = () => {
 
           {/* Right: Phone, Auth & Cart Actions */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            
+
             {isAuthenticated ? (
               <div className="flex items-center gap-2 sm:gap-4">
                 <Link
@@ -342,9 +340,8 @@ const Header = () => {
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-70 w-[85vw] max-w-sm bg-white shadow-2xl flex flex-col lg:hidden transition-transform duration-300 ease-in-out ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed inset-y-0 left-0 z-70 w-[85vw] max-w-sm bg-white shadow-2xl flex flex-col lg:hidden transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div className="p-6 border-b border-gray-100 flex items-center justify-between">
           <Link
@@ -430,11 +427,10 @@ const Header = () => {
                   {item.hasDropdown && (
                     <ChevronDown
                       size={16}
-                      className={`text-gray-400 transition-transform duration-200 ${
-                        expandedMobileItem === item.name
+                      className={`text-gray-400 transition-transform duration-200 ${expandedMobileItem === item.name
                           ? "rotate-180 text-yellow-600"
                           : ""
-                      }`}
+                        }`}
                     />
                   )}
                 </div>
@@ -444,34 +440,34 @@ const Header = () => {
                   <div className="pl-4 pt-1 pb-2 space-y-2.5 border-l-2 border-yellow-400/30 ml-2">
                     {!item.isMega
                       ? item.subItems?.map((sub) => (
-                          <a
-                            key={sub}
-                            href="#"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="block text-xs font-bold text-gray-500 hover:text-yellow-600 py-1 transition-colors uppercase"
-                          >
-                            {sub}
-                          </a>
-                        ))
+                        <a
+                          key={sub}
+                          href="#"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="block text-xs font-bold text-gray-500 hover:text-yellow-600 py-1 transition-colors uppercase"
+                        >
+                          {sub}
+                        </a>
+                      ))
                       : item.megaMenu?.map((section) => (
-                          <div key={section.title} className="space-y-1.5 pt-2">
-                            <p className="text-[11px] font-black uppercase text-gray-900">
-                              {section.title}
-                            </p>
-                            <div className="pl-2 space-y-1.5">
-                              {section.items.map((sub) => (
-                                <a
-                                  key={sub}
-                                  href="#"
-                                  onClick={() => setIsMobileMenuOpen(false)}
-                                  className="block text-xs font-bold text-gray-500 hover:text-yellow-600 py-1 transition-colors uppercase"
-                                >
-                                  {sub}
-                                </a>
-                              ))}
-                            </div>
+                        <div key={section.title} className="space-y-1.5 pt-2">
+                          <p className="text-[11px] font-black uppercase text-gray-900">
+                            {section.title}
+                          </p>
+                          <div className="pl-2 space-y-1.5">
+                            {section.items.map((sub) => (
+                              <a
+                                key={sub}
+                                href="#"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="block text-xs font-bold text-gray-500 hover:text-yellow-600 py-1 transition-colors uppercase"
+                              >
+                                {sub}
+                              </a>
+                            ))}
                           </div>
-                        ))}
+                        </div>
+                      ))}
                   </div>
                 )}
               </div>
