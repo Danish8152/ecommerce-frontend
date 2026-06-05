@@ -112,7 +112,7 @@ const Header = () => {
             />
           </div>
           <p className="flex-1 text-center truncate mx-4">
-            Free shipping for orders over ₹2000
+            Free shipping for orders over ₹2000.00
           </p>
           <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-black">
             <Phone size={14} className="text-black" />
