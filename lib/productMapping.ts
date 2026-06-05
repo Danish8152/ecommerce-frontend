@@ -130,17 +130,7 @@ const resolveUploadsBaseUrl = () => {
     return trimTrailingSlash(explicitBase);
   }
 
-  const apiBase = process.env.NEXT_PUBLIC_API_URL?.trim();
-  if (!apiBase) {
-    return "";
-  }
-
-  try {
-    const parsed = new URL(apiBase);
-    return `${parsed.protocol}//${parsed.host}`;
-  } catch {
-    return "";
-  }
+  return "";
 };
 
 const UPLOADS_BASE_URL = resolveUploadsBaseUrl();
