@@ -228,7 +228,7 @@ const toSafeImageSrc = (value?: string | null) => {
   const src = String(value || "").trim();
 
   if (!src) {
-    return "/Img/walnuts.jpg";
+    return "/Img/logo.webp";
   }
 
   if (src.startsWith("/")) {
@@ -249,7 +249,7 @@ const toSafeImageSrc = (value?: string | null) => {
     return `/${src}`;
   }
 
-  return "/Img/walnuts.jpg";
+  return "/Img/logo.webp";
 };
 
 export default function OrderDetailsPage() {

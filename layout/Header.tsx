@@ -112,7 +112,7 @@ const Header = () => {
             />
           </div>
           <p className="flex-1 text-center truncate mx-4">
-            Free shipping for orders over ₹2000 TESTING PRODUCTION
+            Free shipping for orders over ₹2000
           </p>
           <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-black">
             <Phone size={14} className="text-black" />
@@ -158,8 +158,8 @@ const Header = () => {
                 <Link
                   href={item.href}
                   className={`flex items-center gap-1 transition-colors duration-300 ${hoveredItem === item.name || isActive(item)
-                      ? "text-yellow-600"
-                      : "text-gray-800"
+                    ? "text-yellow-600"
+                    : "text-gray-800"
                     }`}
                 >
                   {item.name}
@@ -188,8 +188,8 @@ const Header = () => {
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
                       className={`absolute top-full left-0 mt-2 bg-white border border-gray-100 shadow-2xl rounded-sm overflow-hidden z-60 ${item.isMega
-                          ? "fixed left-0 right-0 mx-auto w-[90vw] max-w-7xl px-12 py-10 grid grid-cols-3 gap-12"
-                          : "w-56 py-2"
+                        ? "fixed left-0 right-0 mx-auto w-[90vw] max-w-7xl px-12 py-10 grid grid-cols-3 gap-12"
+                        : "w-56 py-2"
                         }`}
                     >
                       {!item.isMega
@@ -428,8 +428,8 @@ const Header = () => {
                     <ChevronDown
                       size={16}
                       className={`text-gray-400 transition-transform duration-200 ${expandedMobileItem === item.name
-                          ? "rotate-180 text-yellow-600"
-                          : ""
+                        ? "rotate-180 text-yellow-600"
+                        : ""
                         }`}
                     />
                   )}

@@ -66,6 +66,10 @@ export type ApiProduct = {
   thumbnail?: string | null;
   minPrice?: string | number;
   totalStock?: string | number;
+  basePrice?: string | number;
+  comparePrice?: string | number | null;
+  stock?: number;
+  sku?: string | null;
   defaultVariantId?: number | string | null;
   categories?: ApiCategory[];
   variants?: ApiVariant[];
@@ -119,7 +123,7 @@ export type UiProductDetail = UiProduct & {
   variants: UiVariant[];
 };
 
-const FALLBACK_IMAGE = "/Img/walnuts.jpg";
+const FALLBACK_IMAGE = "/Img/logo.webp";
 const BROKEN_PLACEHOLDER_HOSTS = new Set(["cdn.example.com"]);
 
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, "");
@@ -343,9 +347,13 @@ const resolveStock = (product: ApiProduct) => {
   }
 
   const totalStock = toNumber(product.totalStock, NaN);
-
   if (Number.isFinite(totalStock)) {
     return totalStock;
+  }
+
+  const simpleStock = toNumber(product.stock, NaN);
+  if (Number.isFinite(simpleStock)) {
+    return simpleStock;
   }
 
   return variants.reduce((sum, variant) => {
@@ -355,9 +363,13 @@ const resolveStock = (product: ApiProduct) => {
 
 const resolvePrice = (product: ApiProduct) => {
   const listMinPrice = toNumber(product.minPrice, NaN);
-
   if (Number.isFinite(listMinPrice)) {
     return listMinPrice;
+  }
+
+  const basePrice = toNumber(product.basePrice, NaN);
+  if (Number.isFinite(basePrice)) {
+    return basePrice;
   }
 
   const variantPrices = (product.variants || [])
@@ -372,6 +384,11 @@ const resolvePrice = (product: ApiProduct) => {
 };
 
 const resolveComparePrice = (product: ApiProduct) => {
+  const baseComparePrice = toNumber(product.comparePrice, NaN);
+  if (Number.isFinite(baseComparePrice)) {
+    return baseComparePrice;
+  }
+
   const variantComparePrices = (product.variants || [])
     .map((variant) => toNumber(variant.comparePrice, NaN))
     .filter((value) => Number.isFinite(value));
@@ -519,7 +536,7 @@ export const mapApiProductToUiProduct = (product: ApiProduct): UiProduct => {
   };
 };
 
-const mapVariantToUiVariant = (variant: ApiVariant): UiVariant | null => {
+const mapVariantToUiVariant = (variant: ApiVariant, fallbackImage = FALLBACK_IMAGE): UiVariant | null => {
   const variantId = toNumber(variant.id, NaN);
   if (!Number.isFinite(variantId)) {
     return null;
@@ -554,7 +571,7 @@ const mapVariantToUiVariant = (variant: ApiVariant): UiVariant | null => {
     image:
       normalizeImageSrc(String(variant.image || "")) ||
       variantGalleryImage ||
-      FALLBACK_IMAGE,
+      fallbackImage,
     stock: resolveVariantSellableQuantity(variant),
     allowBackorder: Boolean(variant.inventory?.allowBackorder),
     status: String(variant.status || "active"),
@@ -564,8 +581,9 @@ const mapVariantToUiVariant = (variant: ApiVariant): UiVariant | null => {
 
 export const mapApiProductToUiProductDetail = (product: ApiProduct): UiProductDetail => {
   const base = mapApiProductToUiProduct(product);
+  const parentProductImage = base.image || FALLBACK_IMAGE;
   const mappedVariants = (product.variants || [])
-    .map(mapVariantToUiVariant)
+    .map((v) => mapVariantToUiVariant(v, parentProductImage))
     .filter(Boolean) as UiVariant[];
   const resolvedDefaultVariantId = resolveDetailDefaultVariantId(base.defaultVariantId, mappedVariants);
 

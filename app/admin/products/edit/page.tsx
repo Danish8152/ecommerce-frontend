@@ -385,23 +385,18 @@ export default function EditProductPage() {
           };
         });
 
-        // Resolve price/stock for simple product
-        const minPrice = product.minPrice !== undefined ? String(product.minPrice) : "";
-        const totalStock = product.totalStock !== undefined ? String(product.totalStock) : "";
-
-        // Get first variant for simple product price/sku
-        const firstVariant = apiVariants[0];
-        const simplePrice = !hasVariants && firstVariant?.price !== undefined
-          ? String(firstVariant.price)
-          : minPrice;
-        const simpleComparePrice = !hasVariants && firstVariant?.comparePrice !== undefined && firstVariant.comparePrice !== null
-          ? String(firstVariant.comparePrice)
+        // Resolve price/stock/sku/comparePrice for simple product
+        const simplePrice = !hasVariants
+          ? (product.basePrice !== undefined && product.basePrice !== null ? String(product.basePrice) : "")
           : "";
-        const simpleSku = !hasVariants && firstVariant?.sku ? String(firstVariant.sku) : "";
+        const simpleComparePrice = !hasVariants
+          ? (product.comparePrice !== undefined && product.comparePrice !== null ? String(product.comparePrice) : "")
+          : "";
+        const simpleSku = !hasVariants
+          ? (product.sku !== undefined && product.sku !== null ? String(product.sku) : "")
+          : "";
         const simpleStock = !hasVariants
-          ? (firstVariant?.inventory?.quantity !== undefined
-            ? String(firstVariant.inventory.quantity)
-            : totalStock)
+          ? (product.stock !== undefined && product.stock !== null ? String(product.stock) : "")
           : "";
 
         // Extract category IDs

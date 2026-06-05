@@ -215,7 +215,7 @@ export const mapCartItem = (item: ApiCartItem): ContextCartItem => {
     image:
       normalizeImageSrc(item.variant?.image || "") ||
       normalizeImageSrc(item.product?.thumbnail || "") ||
-      "/Img/walnuts.jpg",
+      "/Img/logo.webp",
     quantity: Number(item.quantity ?? 0),
     priceChanged: Boolean(item.priceChanged),
     outOfStock: Boolean(item.outOfStock),
@@ -239,7 +239,7 @@ export const mapWishlistItem = (item: ApiWishlistItem): ContextWishlistItem => {
     image:
       normalizeImageSrc(item.variant?.image || "") ||
       normalizeImageSrc(item.product?.thumbnail || "") ||
-      "/Img/walnuts.jpg",
+      "/Img/logo.webp",
     inStock: item.inStock !== false,
   };
 };

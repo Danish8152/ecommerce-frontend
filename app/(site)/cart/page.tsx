@@ -15,7 +15,7 @@ const toSafeImageSrc = (value: string | undefined) => {
   const src = String(value || "").trim();
 
   if (!src) {
-    return "/Img/walnuts.jpg";
+    return "/Img/logo.webp";
   }
 
   if (src.startsWith("/") || src.startsWith("http://") || src.startsWith("https://") || src.startsWith("data:image/")) {
@@ -26,7 +26,7 @@ const toSafeImageSrc = (value: string | undefined) => {
     return `/${src}`;
   }
 
-  return "/Img/walnuts.jpg";
+  return "/Img/logo.webp";
 };
 
 const CartPage = () => {
