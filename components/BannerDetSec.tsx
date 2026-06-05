@@ -8,7 +8,7 @@ const BannerDetSec = () => {
     <section className="relative w-full overflow-hidden min-h-\[600px] flex items-center justify-center py-24">
       {/* Background Image */}
       <Image
-        src="/Img/mockup.webp"
+        src="/Img/originals_bg.png"
         alt="PelTown Premium Collection"
         fill
         sizes="100vw"
@@ -28,17 +28,16 @@ const BannerDetSec = () => {
           className="max-w-3xl mx-auto flex flex-col items-center"
         >
           <span className="text-sm md:text-base font-bold uppercase tracking-[0.3em] mb-6 text-yellow-400">
-            Premium Handpicked Nuts
+            Exclusive Curated Goods
           </span>
 
           <h2 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9] uppercase">
-            Kashmiri Almonds
+            Peltown Originals
           </h2>
 
           <p className="text-lg md:text-2xl max-w-xl mb-12 leading-relaxed font-medium opacity-90">
-            Experience the crunch of nature’s finest selection. Our premium
-            Kashmiri almonds are rich in nutrients, packed with flavor, and
-            harvested with care to ensure the highest quality for your healthy
+            Experience the pinnacle of quality with our curated selection. Every item
+            is handpicked with exceptional care to complement your premium, sophisticated
             lifestyle.
           </p>
 

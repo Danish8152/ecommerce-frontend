@@ -25,10 +25,10 @@ const FALLBACK_SLIDES: HeroSlide[] = [
   },
   {
     id: "fallback-2",
-    title: "HARVEST THE RUSH.",
-    subtitle: "Limited batches from the valley vaults. Taste the rarest picks.",
-    link: "/products?category=dry-fruits",
-    image: "/Img/walnuts.jpg",
+    title: "EXPLORE NEW ARRIVALS.",
+    subtitle: "Premium products curated just for you. Discover the best deals.",
+    link: "/shop",
+    image: "/Img/banner2.webp",
   },
 ];
 
@@ -49,7 +49,7 @@ const resolveImageSrc = (value: string) => {
 };
 
 const HeroSec = () => {
-  const [slides, setSlides] = useState<HeroSlide[]>(FALLBACK_SLIDES);
+  const [slides, setSlides] = useState<HeroSlide[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -72,9 +72,12 @@ const HeroSec = () => {
         if (Array.isArray(items) && items.length > 0) {
           setSlides(items);
           setCurrentIndex(0);
+        } else {
+          setSlides(FALLBACK_SLIDES);
         }
       } catch {
         if (mounted) {
+          setSlides(FALLBACK_SLIDES);
           setLoadError("Unable to load hero banners right now.");
         }
       } finally {
@@ -110,10 +113,13 @@ const HeroSec = () => {
   }, [currentIndex, slides.length]);
 
   const activeSlide = useMemo(() => {
-    return slides[currentIndex] || FALLBACK_SLIDES[0];
+    return slides[currentIndex] || null;
   }, [currentIndex, slides]);
 
   const hasTextContent = useMemo(() => {
+    if (!activeSlide) {
+      return false;
+    }
     const title = (activeSlide.title || "").trim();
     const subtitle = (activeSlide.subtitle || "").trim();
     const link = (activeSlide.link || "").trim();
@@ -143,6 +149,16 @@ const HeroSec = () => {
       prevSlide();
     }
   };
+
+  if (isLoading || !activeSlide) {
+    return (
+      <section className="relative min-h-screen w-full overflow-hidden flex items-center bg-[#1a1a1a]">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-10 h-10 border-4 border-gray-800 border-t-[#facc15] rounded-full animate-spin"></div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden flex items-center">

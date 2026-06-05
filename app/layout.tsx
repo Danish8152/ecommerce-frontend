@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "PelTown",
-  description: "PelTown Premium Nuts & Spices",
+  description: "PelTown Premium Curation & Lifestyle Store",
 };
 
 export default function RootLayout({

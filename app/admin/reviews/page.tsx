@@ -4,11 +4,11 @@ import { Search, Star, MessageSquare, Check, X, Trash2 } from "lucide-react";
 import Image from "next/image";
 
 const initialReviews = [
-  { id: 1, customer: "Alice Morgan", email: "alice@example.com", product: "Kashmiri Walnuts", rating: 5, comment: "Absolutely top quality walnuts! Crunchy, fresh, and properly packed. Will order again.", date: "May 18, 2026", status: "Approved", image: "/Img/walnuts.jpg" },
-  { id: 2, customer: "Mark Spencer", email: "mark@example.com", product: "Kashmiri Dry Honey", rating: 4, comment: "Very unique taste, unlike regular honey. Delivery took one extra day but worth it.", date: "May 17, 2026", status: "Approved", image: "/Img/honey.jpeg" },
-  { id: 3, customer: "Sophia Taylor", email: "sophia@example.com", product: "Kashmiri Almonds", rating: 5, comment: "These almonds are massive and extremely sweet. Premium quality indeed.", date: "May 16, 2026", status: "Pending", image: "/Img/almonds.jpg" },
-  { id: 4, customer: "Robert King", email: "robert@example.com", product: "Kashmiri Blueberry", rating: 1, comment: "Package arrived with damaged wrapping. Disappointed.", date: "May 15, 2026", status: "Rejected", image: "/Img/blueberry.jpg" },
-  { id: 5, customer: "Emma Watson", email: "emma@example.com", product: "Kashmiri Walnuts", rating: 5, comment: "Perfect gift for festive season. Everyone in my family loved the rich taste.", date: "May 12, 2026", status: "Pending", image: "/Img/walnuts.jpg" },
+  { id: 1, customer: "Alice Morgan", email: "alice@example.com", product: "Minimalist Leather Backpack", rating: 5, comment: "Absolutely top quality leather backpack! Sturdy zips, clean compartments. Will order again.", date: "May 18, 2026", status: "Approved", image: "/Img/lifestyle1.png" },
+  { id: 2, customer: "Mark Spencer", email: "mark@example.com", product: "Wireless Headphones", rating: 4, comment: "Great sound quality, ANC is top tier. Highly recommended. Delivery took one extra day but worth it.", date: "May 17, 2026", status: "Approved", image: "/Img/lifestyle2.png" },
+  { id: 3, customer: "Sophia Taylor", email: "sophia@example.com", product: "Ergonomic Office Chair", rating: 5, comment: "Very comfortable mesh backing, back pain is gone. Premium quality indeed.", date: "May 16, 2026", status: "Pending", image: "/Img/lifestyle3.png" },
+  { id: 4, customer: "Robert King", email: "robert@example.com", product: "Mechanical Keyboard", rating: 1, comment: "Keyboard keys feel buttery smooth. Package arrived with damaged wrapping though. Disappointed.", date: "May 15, 2026", status: "Rejected", image: "/Img/lifestyle4.png" },
+  { id: 5, customer: "Emma Watson", email: "emma@example.com", product: "Minimalist Leather Backpack", rating: 5, comment: "Great bag for daily commute. Perfect gift for festive season. Everyone in my family loved it.", date: "May 12, 2026", status: "Pending", image: "/Img/lifestyle1.png" },
 ];
 
 export default function AdminReviews() {

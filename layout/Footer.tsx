@@ -92,7 +92,7 @@ const Footer = () => {
               Categories
             </h4>
             <nav className="flex flex-col gap-3 text-gray-400 font-bold text-sm">
-              {["Almonds", "Cashews", "Walnuts", "Pistachios", "Saffron"].map(
+              {["New Arrivals", "Trending", "Best Sellers", "Featured Products", "Offers"].map(
                 (link) => (
                   <a
                     key={link}

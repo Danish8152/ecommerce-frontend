@@ -6,9 +6,9 @@ import { Quote } from "lucide-react";
 
 const testimonials = [
   {
-    title: "Great vegan items.",
+    title: "Premium lifestyle gear",
     content:
-      "Imperdiet proin fermentum leo vel orci porta. Ac turpis egestas maecenas pharetra. Vitae aliquet nec ullamcorper sit amet risus nullam eget felis. Nisl rhoncus mattis rhoncus urna.",
+      "I am absolutely in love with the quality of products on this store. Fast delivery, beautiful premium packaging, and exactly as described.",
     author: "Otto Porter",
   },
   {
@@ -26,10 +26,10 @@ const testimonials = [
 ];
 
 const galleryImages = [
-  "/Img/gallery1.jpeg",
-  "/Img/gallery2.jpeg",
-  "/Img/gallery3.jpeg",
-  "/Img/gallery4.jpeg",
+  "/Img/lifestyle1.png",
+  "/Img/lifestyle2.png",
+  "/Img/lifestyle3.png",
+  "/Img/lifestyle4.png",
 ];
 
 const CustomerSec = () => {
@@ -77,7 +77,7 @@ const CustomerSec = () => {
             transition={{ delay: 0.2 }}
             className="text-gray-500 text-lg font-medium"
           >
-            Lectus velum mattis suis amet expertuim...
+            See what our community has to say about our premium products and services.
           </motion.p>
         </div>
 

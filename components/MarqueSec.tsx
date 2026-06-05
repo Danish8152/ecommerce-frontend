@@ -8,23 +8,23 @@ import { Star } from "lucide-react";
 const cardData = [
   {
     id: 1,
-    title: "Why Choose Organic Nuts?",
+    title: "Premium Handcrafted Goods",
     content:
-      "Our organic nuts are the pure path to health, free from harmful pesticides and packed with natural vitality.",
-    image: "/Img/gallery1.jpeg", // Use your background-removed PNG
+      "Our curated collections represent the pinnacle of artisanal craftsmanship, built to enhance your everyday lifestyle.",
+    image: "/Img/lifestyle1.png",
   },
   {
     id: 2,
-    title: "Deluxe Roasted Salted Mixed Nuts",
+    title: "Exclusive Designer Collections",
     content:
-      "A savory sensation: deluxe roasted mixed nuts seasoned with sea salt for the ultimate flavor experience.",
-    image: "/Img/almonds.jpg", // Use your background-removed PNG
+      "Discover modern designs, sustainable materials, and elegant aesthetics created for the discerning shopper.",
+    image: "/Img/lifestyle3.png",
   },
 ];
 
 const MarqueSec = () => {
   const marqueeText =
-    " • Organic & Fresh • Packed with Essential Nutrients • Your Daily Superfood • ";
+    " • Premium Quality Curation • World Class Brands • Exceptional Craftsmanship • Worldwide Shipping • ";
 
   return (
     <section className="relative py-24 bg-white overflow-hidden">

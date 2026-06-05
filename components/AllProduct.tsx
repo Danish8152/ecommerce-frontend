@@ -90,11 +90,10 @@ const AllProduct: React.FC<AllProductProps> = ({
             whileInView={{ opacity: 1, y: 0 }}
             className="text-5xl font-black tracking-tighter text-gray-900 mb-4 uppercase"
           >
-            Our Healthy Nut Products
+            Our Curated Collection
           </motion.h2>
           <p className="text-gray-500 max-w-2xl mx-auto font-medium">
-            Discover a wide range of organic and crunchy nut snacks packed with
-            nutrition and flavor for your everyday lifestyle.
+            Discover a wide range of premium products and lifestyle essentials curated for your everyday needs.
           </p>
           {initialSearch.trim() && (
             <p className="mt-3 text-sm font-black uppercase tracking-widest text-gray-700">

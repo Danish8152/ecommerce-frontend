@@ -14,7 +14,7 @@ const ShopPageClient = () => {
       {/* Top Banner */}
       <section className="relative w-full overflow-hidden h-90 md:h-112.5 flex items-center justify-center">
         <Image
-          src="/Img/mockup.webp"
+          src="/Img/shop_bg.png"
           alt="Shop Our Collection"
           fill
           sizes="100vw"
@@ -31,7 +31,7 @@ const ShopPageClient = () => {
             transition={{ duration: 0.6 }}
             className="text-xs md:text-sm font-black uppercase tracking-[0.4em] text-[#facc15] mb-4 block"
           >
-            PelTown 100% Organic & Raw
+            PelTown Curated Lifestyle
           </motion.span>
 
           <motion.h1
@@ -40,7 +40,7 @@ const ShopPageClient = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-7xl font-black uppercase tracking-tighter text-white"
           >
-            PelTown Organic Shop
+            PelTown Marketplace
           </motion.h1>
 
           <motion.p
@@ -51,7 +51,7 @@ const ShopPageClient = () => {
           >
             {searchText.trim()
               ? `Search results for "${searchText.trim()}" across our premium catalog.`
-              : "Explore our curated selection of premium dry fruits, artisanal preserves, natural honey, and pure Kashmiri saffron."}
+              : "Explore our curated selection of premium apparel, accessories, electronics, lifestyle essentials, and curated designer brands."}
           </motion.p>
         </div>
       </section>

@@ -10,7 +10,7 @@ const BestsellerPage = () => {
       {/* Top Banner */}
       <section className="relative w-full overflow-hidden h-[360px] md:h-[450px] flex items-center justify-center">
         <Image
-          src="/Img/mockup.webp"
+          src="/Img/shop_bg.png"
           alt="PelTown Bestsellers"
           fill
           sizes="100vw"
@@ -44,7 +44,7 @@ const BestsellerPage = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-sm md:text-lg text-gray-200 font-medium mt-4 max-w-2xl mx-auto leading-relaxed"
           >
-            Discover the highest-rated and most loved premium Kashmiri dry fruits, organic nuts, and preserves chosen by our community across India.
+            Discover our highest-rated and most-loved premium products, apparel, electronics, and lifestyle essentials chosen by our global community.
           </motion.p>
         </div>
       </section>

@@ -7,32 +7,32 @@ import { ShieldCheck, Leaf, HeartHandshake, Sparkles } from "lucide-react";
 
 export default function AboutPage() {
   const stats = [
-    { label: "Founded in Kashmir", value: "1994" },
-    { label: "Artisanal Orchards", value: "500+" },
-    { label: "100% Organic Products", value: "30+" },
-    { label: "Happy Customers Globally", value: "50k+" },
+    { label: "Established Brand", value: "1994" },
+    { label: "Partner Brands", value: "500+" },
+    { label: "Curated Products", value: "1000+" },
+    { label: "Happy Customers", value: "100k+" },
   ];
 
   const values = [
     {
       icon: <Leaf className="text-[#facc15]" size={28} />,
-      title: "100% Organic & Raw",
-      desc: "Our nuts and preserves are grown without synthetic fertilizers or pesticides, preserving pure mountain nutrients.",
+      title: "Authentic & Verified",
+      desc: "All products in our marketplace undergo rigorous quality verification to ensure they are 100% genuine and pristine.",
     },
     {
       icon: <ShieldCheck className="text-[#facc15]" size={28} />,
-      title: "Pristine Origin",
-      desc: "Sourced directly from the alpine valleys and pristine soil of Pampore and Himalayan highlands.",
+      title: "Global Selection",
+      desc: "Sourced directly from leading international brands and verified local artisans to guarantee authenticity.",
     },
     {
       icon: <HeartHandshake className="text-[#facc15]" size={28} />,
-      title: "Fair Trade & Community",
-      desc: "We partner directly with multi-generational farmer families in Kashmir to ensure ethical and fair wages.",
+      title: "Ethical & Fair Trade",
+      desc: "We partner directly with makers and ethical brands worldwide to support sustainable communities and fair trade practices.",
     },
     {
       icon: <Sparkles className="text-[#facc15]" size={28} />,
-      title: "Hand-Sorted Quality",
-      desc: "Every kernel and saffron thread is painstakingly handpicked and graded for absolute perfection.",
+      title: "Curated Quality",
+      desc: "Every item in our collection is painstakingly reviewed and selected by our experts to meet high standards of quality.",
     },
   ];
 
@@ -66,7 +66,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-7xl font-black uppercase tracking-tighter text-white"
           >
-            Rooted in Pristine Kashmir
+            Curated Premium Marketplace
           </motion.h1>
 
           <motion.p
@@ -75,7 +75,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-sm md:text-lg text-gray-200 font-medium max-w-2xl mx-auto leading-relaxed"
           >
-            For over three decades, PelTown has been dedicated to cultivating and delivering the finest natural dry fruits, pure saffron, and artisanal honeys from the heights of the Himalayas.
+            For over three decades, PelTown has been dedicated to sourcing and delivering the finest premium products, lifestyle essentials, and curated brands from around the globe directly to your doorstep.
           </motion.p>
         </div>
       </section>
@@ -108,8 +108,8 @@ export default function AboutPage() {
           className="relative aspect-4/3 rounded-4xl overflow-hidden shadow-2xl border border-gray-100"
         >
           <Image
-            src="/Img/gallery1.jpeg"
-            alt="Harvesting in Kashmir"
+            src="/Img/lifestyle4.png"
+            alt="Premium lifestyle collection"
             fill
             sizes="100vw"
             className="object-cover"
@@ -126,13 +126,13 @@ export default function AboutPage() {
             Artisanal Excellence
           </span>
           <h2 className="text-3xl sm:text-5xl font-black text-gray-900 tracking-tighter uppercase leading-tight">
-            Nurtured by Snow-Fed Glaciers
+            Designed for Premium Living
           </h2>
           <p className="text-gray-600 font-medium leading-relaxed text-base sm:text-lg">
-            Our orchards flourish in the unique microclimate of the Kashmir valley. High altitudes, cold mountain air, and mineral-rich glacial waters produce walnuts, almonds, and saffron with a density of nutrients and flavor unmatched anywhere else in the world.
+            Our collections are curated for the discerning customer. We look for unique craftsmanship, premium materials, and unparalleled design quality, ensuring that every product we host represents the pinnacle of lifestyle excellence.
           </p>
           <p className="text-gray-600 font-medium leading-relaxed text-base sm:text-lg">
-            We believe that natural food should remain uncorrupted. We do not pasteurize our honey, nor do we bleach our walnuts. Everything reaches your table exactly as nature intended.
+            We believe that premium shopping should be seamless and transparent. We do not compromise on quality, authenticity, or service. Everything we list is guaranteed original, authentic, and delivered exactly as designed.
           </p>
         </motion.div>
       </section>

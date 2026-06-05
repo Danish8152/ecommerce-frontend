@@ -27,7 +27,7 @@ const ContactPage = () => {
       {/* Top Banner */}
       <section className="relative w-full overflow-hidden h-[300px] md:h-[400px] flex items-center justify-center">
         <Image
-          src="/Img/mockup.webp"
+          src="/Img/shop_bg.png"
           alt="Contact PelTown"
           fill
           sizes="100vw"
@@ -102,9 +102,9 @@ const ContactPage = () => {
                 <MapPin size={24} />
               </div>
               <div>
-                <h3 className="text-lg font-black text-gray-900 uppercase">Our Orchards & HQ</h3>
+                <h3 className="text-lg font-black text-gray-900 uppercase">Corporate HQ</h3>
                 <p className="text-gray-500 text-sm mt-1 leading-relaxed">
-                  Pampore Orchards, Srinagar, Kashmir, Jammu and Kashmir - 190001
+                  PelTown HQ Plaza, Srinagar, Kashmir, Jammu and Kashmir - 190001
                 </p>
               </div>
             </div>

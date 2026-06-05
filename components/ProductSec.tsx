@@ -124,8 +124,7 @@ const ProductSec = () => {
               Bestseller
             </h2>
             <p className="text-gray-500 mt-4 max-w-2xl text-sm md:text-lg leading-relaxed font-medium">
-              Premium quality dry fruits and preserves sourced directly from the
-              valleys of Kashmir.
+              Discover our top trending items, premium selections, and most-loved products curated for you.
             </p>
           </motion.div>
           <div className="flex gap-3">
