@@ -464,7 +464,7 @@ export const uploadApi = {
 
     return api.post(`/v1/media/upload/${section}`, formData, {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": undefined,
       },
     });
   },
