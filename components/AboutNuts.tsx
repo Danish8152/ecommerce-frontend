@@ -35,7 +35,7 @@ const AboutNutsSec = () => {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl font-black text-black mb-4 tracking-tighter uppercase"
+            className="text-4xl md:text-5xl font-serif font-semibold text-black mb-4"
           >
             Shop by Department
           </motion.h2>
@@ -65,7 +65,7 @@ const AboutNutsSec = () => {
               </div>
 
               {/* Text Content */}
-              <h3 className="text-2xl font-black text-black mb-3 tracking-tight uppercase">
+              <h3 className="text-xl font-semibold text-black mb-3 tracking-tight">
                 {dept.title}
               </h3>
               <p className="text-gray-500 text-sm leading-relaxed max-w-[200px] font-medium">

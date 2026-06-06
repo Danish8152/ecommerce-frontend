@@ -210,7 +210,7 @@ const HeroSec = () => {
                       </span>
                     </div>
 
-                    <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black mb-6 drop-shadow-2xl">
+                    <h1 className="text-4xl sm:text-6xl lg:text-7xl font-serif font-semibold mb-6 drop-shadow-2xl">
                       {activeSlide.title}
                     </h1>
                   </>

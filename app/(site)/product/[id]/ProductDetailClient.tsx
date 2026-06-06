@@ -324,10 +324,10 @@ export default function ProductDetailClient() {
           {/* Details & Purchasing Column */}
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-8">
             <div className="space-y-3">
-              <span className="text-xs font-black uppercase text-[#facc15] bg-yellow-50 px-3 py-1.5 rounded-full tracking-widest border border-yellow-100">
+              <span className="text-xs font-bold uppercase text-[#facc15] bg-yellow-50 px-3 py-1.5 rounded-full tracking-widest border border-yellow-100">
                 {product.category}
               </span>
-              <h1 className="text-3xl sm:text-5xl font-black text-gray-900 uppercase tracking-tight leading-none">
+              <h1 className="text-3xl sm:text-5xl font-sans font-semibold text-gray-900 leading-tight">
                 {product.name}
               </h1>
             </div>
@@ -579,7 +579,7 @@ export default function ProductDetailClient() {
         {/* You May Also Like Section */}
         <div className="space-y-12 pt-12 border-t border-gray-100">
           <div className="text-center">
-            <h2 className="text-4xl font-black tracking-tighter text-gray-900 uppercase mb-3">You May Also Like</h2>
+            <h2 className="text-3xl font-serif font-semibold text-gray-900 mb-3">You May Also Like</h2>
             <p className="text-gray-500 font-medium text-sm sm:text-base">
               Explore handpicked recommendations tailored to complement your wholesome taste.
             </p>

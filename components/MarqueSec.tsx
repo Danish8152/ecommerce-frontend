@@ -54,7 +54,7 @@ const MarqueSec = () => {
 
               {/* Text Content */}
               <div className="grow text-center sm:text-left">
-                <h3 className="text-xl sm:text-2xl font-black text-gray-950 mb-2 sm:mb-3 leading-tight tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-semibold text-gray-950 mb-2 sm:mb-3 leading-tight tracking-tight">
                   {item.title}
                 </h3>
                 <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-5 font-medium">

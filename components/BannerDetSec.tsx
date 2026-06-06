@@ -31,7 +31,7 @@ const BannerDetSec = () => {
             Exclusive Curated Goods
           </span>
 
-          <h2 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter leading-[0.9] uppercase">
+          <h2 className="text-5xl md:text-7xl font-serif font-semibold mb-8 leading-[1.0] capitalize">
             Peltown Originals
           </h2>
 

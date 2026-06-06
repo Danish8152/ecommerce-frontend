@@ -66,7 +66,7 @@ const CustomerSec = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-5xl font-black tracking-tighter text-[#1a1a1a] mb-4"
+            className="text-4xl md:text-5xl font-serif font-semibold text-[#1a1a1a] mb-4"
           >
             Our customers love us
           </motion.h2>

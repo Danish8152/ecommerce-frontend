@@ -207,7 +207,7 @@ const Header = () => {
                             key={section.title}
                             className="flex flex-col gap-6"
                           >
-                            <h3 className="text-[14px] font-black border-b border-gray-100 pb-3 mb-2">
+                            <h3 className="text-[14px] font-bold border-b border-gray-100 pb-3 mb-2">
                               {section.title}
                             </h3>
                             <div className="flex flex-col gap-3">

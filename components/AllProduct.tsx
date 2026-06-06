@@ -88,7 +88,7 @@ const AllProduct: React.FC<AllProductProps> = ({
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-5xl font-black tracking-tighter text-gray-900 mb-4 uppercase"
+            className="text-4xl md:text-5xl font-serif font-semibold text-gray-900 mb-4"
           >
             Our Curated Collection
           </motion.h2>
@@ -257,7 +257,7 @@ const AllProduct: React.FC<AllProductProps> = ({
                 {/* Title */}
                 <Link
                   href={productLink}
-                  className="text-sm font-bold text-gray-800 hover:text-yellow-600 transition-colors mb-3 h-10 line-clamp-2 px-2 leading-tight block uppercase tracking-tight"
+                  className="text-sm font-semibold text-gray-800 hover:text-yellow-600 transition-colors mb-3 h-10 line-clamp-2 px-2 leading-tight block"
                 >
                   {product.name}
                 </Link>

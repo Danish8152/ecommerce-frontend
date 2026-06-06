@@ -21,7 +21,7 @@ const Footer = () => {
         {/* 1. Newsletter Section */}
         <div className="flex flex-col lg:flex-row items-center justify-between pb-16 border-b border-gray-800 mb-16 gap-8">
           <div className="max-w-xl">
-            <h2 className="text-4xl lg:text-5xl font-black tracking-tighter leading-none">
+            <h2 className="text-4xl lg:text-5xl font-serif font-semibold tracking-normal leading-tight">
               Sign up and get{" "}
               <span className="text-[#facc15]">20% discount</span> <br />
               on your next purchase

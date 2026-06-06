@@ -120,7 +120,7 @@ const ProductSec = () => {
             viewport={{ once: true }}
             className="flex flex-col items-center"
           >
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-gray-900 uppercase">
+            <h2 className="text-4xl md:text-5xl font-serif font-semibold text-gray-900">
               Bestseller
             </h2>
             <p className="text-gray-500 mt-4 max-w-2xl text-sm md:text-lg leading-relaxed font-medium">
@@ -295,7 +295,7 @@ const ProductSec = () => {
 
                       <Link
                         href={productLink}
-                        className="text-base sm:text-lg font-black text-gray-800 hover:text-yellow-600 transition-colors mt-2 mb-3 h-10 sm:h-12 line-clamp-2 px-2 leading-tight uppercase tracking-tight block"
+                        className="text-base sm:text-lg font-semibold text-gray-800 hover:text-yellow-600 transition-colors mt-2 mb-3 h-10 sm:h-12 line-clamp-2 px-2 leading-tight block"
                       >
                         {product.name}
                       </Link>
