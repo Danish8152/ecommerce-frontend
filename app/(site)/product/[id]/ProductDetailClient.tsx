@@ -27,6 +27,7 @@ import {
   UiProduct,
   UiProductDetail,
 } from "@/lib/productMapping";
+import ReviewsSection from "@/app/components/review/ReviewsSection";
 
 export default function ProductDetailClient() {
   const params = useParams();
@@ -350,7 +351,11 @@ export default function ProductDetailClient() {
                   );
                 })}
               </div>
-              <span className="text-xs font-bold text-gray-400">({product.rating} / 5.0 Rating • 24 Reviews)</span>
+              <span className="text-xs font-bold text-gray-400">
+                {product.totalReviews > 0
+                  ? `${product.rating.toFixed(1)} / 5.0 • ${product.totalReviews} ${product.totalReviews === 1 ? "Review" : "Reviews"}`
+                  : "No reviews yet"}
+              </span>
             </div>
 
             {/* Price */}
@@ -575,6 +580,18 @@ export default function ProductDetailClient() {
             )}
           </div>
         </div>
+
+        {/* Reviews Section */}
+        {product && (
+          <ReviewsSection
+            productId={productId}
+            productName={product.name}
+            isLoggedIn={Boolean(typeof window !== "undefined" && localStorage.getItem("accessToken"))}
+            productRating={product.rating}
+            productTotalReviews={product.totalReviews}
+            ratingDistribution={product.ratingDistribution}
+          />
+        )}
 
         {/* You May Also Like Section */}
         <div className="space-y-12 pt-12 border-t border-gray-100">

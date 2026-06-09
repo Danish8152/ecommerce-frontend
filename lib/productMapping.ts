@@ -75,6 +75,13 @@ export type ApiProduct = {
   variants?: ApiVariant[];
   media?: ApiMedia[];
   metaEntries?: ApiMetaEntry[];
+  averageRating?: number | string | null;
+  totalReviews?: number | string | null;
+  rating1Count?: number | null;
+  rating2Count?: number | null;
+  rating3Count?: number | null;
+  rating4Count?: number | null;
+  rating5Count?: number | null;
 };
 
 export type UiSpec = {
@@ -101,6 +108,8 @@ export type UiProduct = {
   image: string;
   defaultVariantId: number | null;
   rating: number;
+  totalReviews: number;
+  ratingDistribution: { 1: number; 2: number; 3: number; 4: number; 5: number };
   benefits: string[];
   specs: UiSpec[];
 };
@@ -530,7 +539,15 @@ export const mapApiProductToUiProduct = (product: ApiProduct): UiProduct => {
     status: resolveStatusLabel(String(product.status || "active"), stock),
     image: resolveImage(product),
     defaultVariantId: resolveDefaultVariantId(product),
-    rating: 4.5,
+    rating: toNumber(product.averageRating, 0),
+    totalReviews: toNumber(product.totalReviews, 0),
+    ratingDistribution: {
+      1: toNumber(product.rating1Count, 0),
+      2: toNumber(product.rating2Count, 0),
+      3: toNumber(product.rating3Count, 0),
+      4: toNumber(product.rating4Count, 0),
+      5: toNumber(product.rating5Count, 0),
+    },
     benefits: resolveBenefits(metaMap),
     specs: resolveSpecs(metaMap),
   };

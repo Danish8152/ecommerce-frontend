@@ -451,7 +451,7 @@ export const categoryApi = {
     api.get("/v1/categories/tree", { params }),
 };
 
-type MediaSection = "products" | "variants" | "categories" | "brands" | "users" | "hero-banners" | "temp";
+type MediaSection = "products" | "variants" | "categories" | "brands" | "users" | "hero-banners" | "reviews" | "temp";
 
 export const uploadApi = {
   uploadMedia: (section: MediaSection, file: File, baseName?: string) => {
@@ -476,6 +476,76 @@ export const uploadApi = {
   uploadHeroBannerImage: (file: File, baseName?: string) => {
     return uploadApi.uploadMedia("hero-banners", file, baseName);
   },
+
+  uploadReviewMedia: (file: File, baseName?: string) => {
+    return uploadApi.uploadMedia("reviews", file, baseName);
+  },
+};
+
+export const reviewApi = {
+  create: (data: {
+    productId: number;
+    rating: number;
+    title?: string;
+    comment?: string;
+    mediaIds?: number[];
+  }) => api.post("/v1/reviews", data),
+
+  getById: (id: number | string) => api.get(`/v1/reviews/${id}`),
+
+  update: (id: number | string, data: {
+    rating?: number;
+    title?: string;
+    comment?: string;
+  }) => api.patch(`/v1/reviews/${id}`, data),
+
+  delete: (id: number | string) => api.delete(`/v1/reviews/${id}`),
+
+  listForProduct: (productId: number | string, params?: Record<string, string | number | boolean>) =>
+    api.get(`/v1/products/${productId}/reviews`, { params }),
+
+  uploadMedia: (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return api.post("/v1/reviews/media/upload", formData, {
+      headers: {
+        "Content-Type": undefined,
+      },
+    });
+  },
+
+  addHelpfulVote: (id: number | string) => api.post(`/v1/reviews/${id}/helpful`),
+
+  removeHelpfulVote: (id: number | string) => api.delete(`/v1/reviews/${id}/helpful`),
+};
+
+export const adminReviewApi = {
+  list: (params?: Record<string, string | number | boolean>) =>
+    api.get("/v1/admin/reviews", { params }),
+
+  getById: (id: number | string) => api.get(`/v1/admin/reviews/${id}`),
+
+  approve: (id: number | string) => api.patch(`/v1/admin/reviews/${id}/approve`),
+
+  reject: (id: number | string) => api.patch(`/v1/admin/reviews/${id}/reject`),
+
+  hide: (id: number | string) => api.patch(`/v1/admin/reviews/${id}/hide`),
+
+  addReply: (id: number | string, data: { reply: string }) =>
+    api.patch(`/v1/admin/reviews/${id}/reply`, data),
+
+  delete: (id: number | string) => api.delete(`/v1/admin/reviews/${id}`),
+
+  getAnalytics: () => api.get("/v1/admin/reviews/analytics"),
+
+  getTopRated: (params?: Record<string, string | number | boolean>) =>
+    api.get("/v1/admin/reviews/analytics/top-rated", { params }),
+
+  getLowestRated: (params?: Record<string, string | number | boolean>) =>
+    api.get("/v1/admin/reviews/analytics/lowest-rated", { params }),
+
+  getMostReviewed: (params?: Record<string, string | number | boolean>) =>
+    api.get("/v1/admin/reviews/analytics/most-reviewed", { params }),
 };
 
 export default api;
