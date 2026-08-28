@@ -26,10 +26,10 @@ const testimonials = [
 ];
 
 const galleryImages = [
-  "/Img/lifestyle1.png",
-  "/Img/lifestyle2.png",
-  "/Img/lifestyle3.png",
-  "/Img/lifestyle4.png",
+  "/Img/showcase-sneakers.webp",
+  "/Img/showcase-knitwear.webp",
+  "/Img/showcase-lamp.webp",
+  "/Img/showcase-sunglasses.webp",
 ];
 
 const CustomerSec = () => {

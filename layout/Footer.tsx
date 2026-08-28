@@ -46,10 +46,10 @@ const Footer = () => {
           <div className="flex flex-col gap-6">
             <Link href="/" className="inline-block w-fit cursor-pointer">
               <Image
-                src="/Img/white-logo-Peltown.png"
-                alt="PelTown"
+                src="/Img/nibblex-logo-light.png"
+                alt="NibbleX"
                 width={180}
-                height={50}
+                height={47}
                 className="h-9 w-auto transition-opacity hover:opacity-90"
               />
             </Link>

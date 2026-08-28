@@ -9,7 +9,7 @@ const BannerDetSec = () => {
       {/* Background Image */}
       <Image
         src="/Img/originals_bg.png"
-        alt="PelTown Premium Collection"
+        alt="NibbleX Premium Collection"
         fill
         sizes="100vw"
         className="object-cover z-0"
@@ -32,7 +32,7 @@ const BannerDetSec = () => {
           </span>
 
           <h2 className="text-5xl md:text-7xl font-serif font-semibold mb-8 leading-[1.0] capitalize">
-            Peltown Originals
+            NibbleX Originals
           </h2>
 
           <p className="text-lg md:text-2xl max-w-xl mb-12 leading-relaxed font-medium opacity-90">

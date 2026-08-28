@@ -42,7 +42,7 @@ export default function AboutPage() {
       <section className="relative w-full overflow-hidden h-\[380px] md:h-\[480px] flex items-center justify-center">
         <Image
           src="/Img/hero.webp"
-          alt="PelTown Heritage"
+          alt="NibbleX Heritage"
           fill
           sizes="100vw"
           className="object-cover z-0"
@@ -75,7 +75,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-sm md:text-lg text-gray-200 font-medium max-w-2xl mx-auto leading-relaxed"
           >
-            For over three decades, PelTown has been dedicated to sourcing and delivering the finest premium products, lifestyle essentials, and curated brands from around the globe directly to your doorstep.
+            For over three decades, NibbleX has been dedicated to sourcing and delivering the finest premium products, lifestyle essentials, and curated brands from around the globe directly to your doorstep.
           </motion.p>
         </div>
       </section>

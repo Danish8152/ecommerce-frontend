@@ -32,10 +32,10 @@ const ForgotPasswordPage = () => {
         <div className="text-center mb-10">
           <Link href="/" className="inline-flex mb-6 cursor-pointer">
             <Image
-              src="/Img/white-logo-Peltown.png"
-              alt="PelTown"
+              src="/Img/nibblex-logo-light.png"
+              alt="NibbleX"
               width={170}
-              height={48}
+              height={45}
               className="h-9 w-auto"
               priority
             />

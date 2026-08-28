@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { buildDemoProductList, upstreamListHasItems } from "@/lib/demoCatalog";
 
 const METHODS_WITH_BODY = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
+const demoListResponse = (request: NextRequest) =>
+  NextResponse.json(buildDemoProductList(request.nextUrl.searchParams), {
+    status: 200,
+    headers: { "x-demo-catalog": "1", "cache-control": "no-store" },
+  });
 
 const getApiBaseUrl = () => {
   const value = process.env.API_URL?.trim();
@@ -33,8 +40,14 @@ const copySetCookieHeaders = (upstream: Response, responseHeaders: Headers) => {
 
 const proxyProductsRequest = async (request: NextRequest) => {
   const apiBaseUrl = getApiBaseUrl();
+  const isGet = request.method.toUpperCase() === "GET";
 
   if (!apiBaseUrl) {
+    // Keep the storefront browsable during demos without a backend.
+    if (isGet) {
+      return demoListResponse(request);
+    }
+
     return NextResponse.json(
       {
         message: "API_URL is not configured",
@@ -103,12 +116,42 @@ const proxyProductsRequest = async (request: NextRequest) => {
 
     copySetCookieHeaders(upstream, responseHeaders);
 
+    // For product browsing, fall back to the demo catalogue whenever the
+    // upstream service errors or hands back an empty list.
+    if (isGet) {
+      if (!upstream.ok) {
+        return demoListResponse(request);
+      }
+
+      const rawBody = await upstream.text();
+      let parsedBody: unknown = null;
+      try {
+        parsedBody = JSON.parse(rawBody);
+      } catch {
+        parsedBody = null;
+      }
+
+      if (!upstreamListHasItems(parsedBody)) {
+        return demoListResponse(request);
+      }
+
+      return new NextResponse(rawBody, {
+        status: upstream.status,
+        statusText: upstream.statusText,
+        headers: responseHeaders,
+      });
+    }
+
     return new NextResponse(upstream.body, {
       status: upstream.status,
       statusText: upstream.statusText,
       headers: responseHeaders,
     });
   } catch (error) {
+    if (isGet) {
+      return demoListResponse(request);
+    }
+
     return NextResponse.json(
       {
         message: "Unable to reach product service",

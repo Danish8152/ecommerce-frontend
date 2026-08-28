@@ -24,8 +24,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PelTown",
-  description: "PelTown Premium Curation & Lifestyle Store",
+  title: "NibbleX",
+  description: "NibbleX Premium Curation & Lifestyle Store",
 };
 
 export default function RootLayout({

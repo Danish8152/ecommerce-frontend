@@ -31,7 +31,7 @@ const ShopPageClient = () => {
             transition={{ duration: 0.6 }}
             className="text-xs md:text-sm font-black uppercase tracking-[0.4em] text-[#facc15] mb-4 block"
           >
-            PelTown Curated Lifestyle
+            NibbleX Curated Lifestyle
           </motion.span>
 
           <motion.h1
@@ -40,7 +40,7 @@ const ShopPageClient = () => {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-7xl font-black uppercase tracking-tighter text-white"
           >
-            PelTown Marketplace
+            NibbleX Marketplace
           </motion.h1>
 
           <motion.p

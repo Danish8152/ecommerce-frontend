@@ -7,9 +7,9 @@ export default function AdminSettings() {
   const [isSaved, setIsSaved] = useState(false);
 
   // Settings State
-  const [storeName, setStoreName] = useState("PelTown Premium Organics");
-  const [contactEmail, setContactEmail] = useState("support@peltown.com");
-  const [phone, setPhone] = useState("+1 (800) 555-PELT");
+  const [storeName, setStoreName] = useState("NibbleX Premium Organics");
+  const [contactEmail, setContactEmail] = useState("support@nibblex.tech");
+  const [phone, setPhone] = useState("+1 (800) 555-NBLX");
   const [currency, setCurrency] = useState("USD");
   const [taxRate, setTaxRate] = useState("10");
   const [flatShipping, setFlatShipping] = useState("15.00");

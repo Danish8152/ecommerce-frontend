@@ -136,10 +136,10 @@ const Header = () => {
               className="cursor-pointer inline-flex shrink-0 items-center"
             >
               <Image
-                src="/Img/Black-logo.webp"
-                alt="PelTown"
+                src="/Img/nibblex-logo-dark.png"
+                alt="NibbleX"
                 width={170}
-                height={46}
+                height={45}
                 className="h-8 w-auto sm:h-9"
                 priority
               />
@@ -350,10 +350,10 @@ const Header = () => {
             className="inline-flex items-center"
           >
             <Image
-              src="/Img/Black-logo.webp"
-              alt="PelTown"
+              src="/Img/nibblex-logo-dark.png"
+              alt="NibbleX"
               width={155}
-              height={42}
+              height={41}
               className="h-8 w-auto"
             />
           </Link>

@@ -90,7 +90,7 @@ export const loadRazorpayCheckout = async ({
     amount: payload.amount,
     currency: payload.currency,
     order_id: payload.razorpayOrderId,
-    name: "Peltown",
+    name: "NibbleX",
     description: `Order ${payload.orderNumber}`,
     handler: (response) => {
       void onSuccess(response);

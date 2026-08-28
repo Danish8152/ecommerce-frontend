@@ -62,8 +62,8 @@ const BannerSec = () => {
       {/* 1. Left Side: Lifestyle Branding */}
       <div className="relative w-full lg:w-1/2 h-100 lg:h-auto bg-white flex items-center justify-center p-10">
         <Image
-          src="/Img/lifestyle1.png"
-          alt="PelTown Premium Collection"
+          src="/Img/feature-watch.webp"
+          alt="NibbleX Premium Collection"
           fill
           sizes="(min-width: 1024px) 50vw, 100vw"
           className="object-cover"

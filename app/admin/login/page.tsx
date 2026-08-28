@@ -60,10 +60,10 @@ export default function AdminLoginPage() {
         <div className="text-center mb-10">
           <Link href="/" className="inline-flex mb-6 cursor-pointer">
             <Image
-              src="/Img/white-logo-Peltown.png"
-              alt="PelTown"
+              src="/Img/nibblex-logo-light.png"
+              alt="NibbleX"
               width={170}
-              height={48}
+              height={45}
               className="h-9 w-auto"
               priority
             />
@@ -71,8 +71,8 @@ export default function AdminLoginPage() {
           <div className="w-14 h-14 rounded-2xl bg-[#facc15]/15 border border-[#facc15]/30 text-[#facc15] flex items-center justify-center mx-auto mb-4">
             <FaShieldAlt size={24} />
           </div>
-          <h1 className="text-3xl font-black text-white tracking-tight mb-2">PelTown Admin Login</h1>
-          <p className="text-sm text-gray-400 font-medium">Only PelTown admin and super admin accounts can continue.</p>
+          <h1 className="text-3xl font-black text-white tracking-tight mb-2">NibbleX Admin Login</h1>
+          <p className="text-sm text-gray-400 font-medium">Only NibbleX admin and super admin accounts can continue.</p>
         </div>
 
         {error && (
@@ -119,7 +119,7 @@ export default function AdminLoginPage() {
               "Signing in..."
             ) : (
               <>
-                Enter PelTown Admin Panel <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
+                Enter NibbleX Admin Panel <FaArrowRight className="group-hover:translate-x-1 transition-transform" />
               </>
             )}
           </button>

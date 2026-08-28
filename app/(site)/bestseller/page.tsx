@@ -11,7 +11,7 @@ const BestsellerPage = () => {
       <section className="relative w-full overflow-hidden h-[360px] md:h-[450px] flex items-center justify-center">
         <Image
           src="/Img/shop_bg.png"
-          alt="PelTown Bestsellers"
+          alt="NibbleX Bestsellers"
           fill
           sizes="100vw"
           className="object-cover z-0"

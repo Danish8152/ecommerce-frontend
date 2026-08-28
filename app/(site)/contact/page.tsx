@@ -28,7 +28,7 @@ const ContactPage = () => {
       <section className="relative w-full overflow-hidden h-[300px] md:h-[400px] flex items-center justify-center">
         <Image
           src="/Img/shop_bg.png"
-          alt="Contact PelTown"
+          alt="Contact NibbleX"
           fill
           sizes="100vw"
           className="object-cover z-0"
@@ -93,7 +93,7 @@ const ContactPage = () => {
               <div>
                 <h3 className="text-lg font-black text-gray-900 uppercase">Email Support</h3>
                 <p className="text-gray-500 text-sm mt-1">We respond within 24 business hours</p>
-                <p className="text-lg font-bold text-gray-900 mt-2">support@peltown.com</p>
+                <p className="text-lg font-bold text-gray-900 mt-2">support@nibblex.tech</p>
               </div>
             </div>
 
@@ -104,7 +104,7 @@ const ContactPage = () => {
               <div>
                 <h3 className="text-lg font-black text-gray-900 uppercase">Corporate HQ</h3>
                 <p className="text-gray-500 text-sm mt-1 leading-relaxed">
-                  PelTown HQ Plaza, Srinagar, Kashmir, Jammu and Kashmir - 190001
+                  NibbleX HQ Plaza, Srinagar, Kashmir, Jammu and Kashmir - 190001
                 </p>
               </div>
             </div>

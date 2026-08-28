@@ -833,7 +833,7 @@ export default function EditProductPage() {
                   <label className="mb-2 block text-xs font-black uppercase text-gray-700">Brand Name</label>
                   <input
                     type="text"
-                    placeholder="e.g. PelTown"
+                    placeholder="e.g. NibbleX"
                     value={formData.brandName}
                     onChange={(event) => setField("brandName", event.target.value)}
                     className="w-full rounded-2xl border-none bg-gray-50 px-5 py-4 text-sm font-semibold text-gray-900 outline-none transition-all focus:ring-2 focus:ring-[#facc15]"

@@ -1,10 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
+import { buildDemoProductDetail, upstreamDetailHasProduct } from "@/lib/demoCatalog";
 
 type RouteContext = {
   params: Promise<{ id: string }>;
 };
 
 const METHODS_WITH_BODY = new Set(["PUT", "PATCH", "DELETE"]);
+
+const demoDetailResponse = (id: string) =>
+  NextResponse.json(buildDemoProductDetail(id), {
+    status: 200,
+    headers: { "x-demo-catalog": "1", "cache-control": "no-store" },
+  });
 
 const getApiBaseUrl = () => {
   const value = process.env.API_URL?.trim();
@@ -37,15 +44,7 @@ const copySetCookieHeaders = (upstream: Response, responseHeaders: Headers) => {
 
 const proxyProductByIdRequest = async (request: NextRequest, context: RouteContext) => {
   const apiBaseUrl = getApiBaseUrl();
-
-  if (!apiBaseUrl) {
-    return NextResponse.json(
-      {
-        message: "API_URL is not configured",
-      },
-      { status: 500 },
-    );
-  }
+  const isGet = request.method.toUpperCase() === "GET";
 
   const { id } = await context.params;
 
@@ -55,6 +54,19 @@ const proxyProductByIdRequest = async (request: NextRequest, context: RouteConte
         message: "Product id is required",
       },
       { status: 400 },
+    );
+  }
+
+  if (!apiBaseUrl) {
+    if (isGet) {
+      return demoDetailResponse(id);
+    }
+
+    return NextResponse.json(
+      {
+        message: "API_URL is not configured",
+      },
+      { status: 500 },
     );
   }
 
@@ -118,12 +130,42 @@ const proxyProductByIdRequest = async (request: NextRequest, context: RouteConte
 
     copySetCookieHeaders(upstream, responseHeaders);
 
+    // For product browsing, fall back to the demo catalogue whenever the
+    // upstream service errors or has no matching product.
+    if (isGet) {
+      if (!upstream.ok) {
+        return demoDetailResponse(id);
+      }
+
+      const rawBody = await upstream.text();
+      let parsedBody: unknown = null;
+      try {
+        parsedBody = JSON.parse(rawBody);
+      } catch {
+        parsedBody = null;
+      }
+
+      if (!upstreamDetailHasProduct(parsedBody)) {
+        return demoDetailResponse(id);
+      }
+
+      return new NextResponse(rawBody, {
+        status: upstream.status,
+        statusText: upstream.statusText,
+        headers: responseHeaders,
+      });
+    }
+
     return new NextResponse(upstream.body, {
       status: upstream.status,
       statusText: upstream.statusText,
       headers: responseHeaders,
     });
   } catch (error) {
+    if (isGet) {
+      return demoDetailResponse(id);
+    }
+
     return NextResponse.json(
       {
         message: "Unable to reach product service",
